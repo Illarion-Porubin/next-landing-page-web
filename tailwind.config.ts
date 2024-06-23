@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      content: {
+        'arrow': 'url("/public/arrow.svg")',
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
