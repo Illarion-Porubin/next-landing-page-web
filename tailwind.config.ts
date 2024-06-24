@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        'gridrepeat2': 'repeat(2, minmax(100px, 330px))',
+
+        // Complex site-specific column configuration
+        'footer': '200px minmax(900px, 1fr) 100px',
+      },
       content: {
         'arrow': 'url("/public/arrow.svg")',
       },

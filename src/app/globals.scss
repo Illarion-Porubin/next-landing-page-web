@@ -50,23 +50,39 @@ body {
 
 :root{
   .swiper-pagination{
-    margin-right: 20px;
+    margin-right: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 180px;
+    justify-content: space-between;
   }
+
   .swiper-pagination-bullet{
     background-color: white;
     opacity: 1;
     width: 8px;
-    height: 8px;
-    
+    height: 8px; 
   }
   .swiper-pagination-bullet-active{
     background-color: red;
     width: 14px;
     height: 14px;
+  }
+  ::-webkit-scrollbar{
+    width: 3px;
+    height: auto;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+  }
+  
+  ::-webkit-scrollbar-thumb{
+    width: 50% !important;
+    height: 50% !important;
+    background-color: red;
+    border-radius: 2px;
+    border: 1px solid black;
   }
 }
 
@@ -196,3 +212,26 @@ body {
 .shadow_circle {
   box-shadow: -15px -15px 20px 0 rgba(0, 0, 0, 0.8);
 }
+
+.works_wrap{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 18%;
+ 
+}
+
+.works {
+  width: 100%;
+  height: 480px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(100px, 340px));
+  grid-template-rows: repeat(auto, minmax(100px, 200px));
+  gap: 36px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+

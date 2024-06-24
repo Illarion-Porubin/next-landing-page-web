@@ -2,21 +2,17 @@
 
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-  Autoplay,
-} from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import Image from "next/image";
-import Main from "@/components/project/main/Main";
 
-//slider1
+import Main from "@/components/project/main/Main";
+import About from "@/components/project/about/About";
+import Works from "@/components/project/works/Works";
+import Price from "@/components/project/price/price";
+import Contacts from "@/components/project/contacts/Contacts";
 
 export default function Home() {
   return (
@@ -26,22 +22,21 @@ export default function Home() {
       mousewheel={true}
       touchReleaseOnEdges={true}
       modules={[Pagination]}
-      className="mySwiper"
     >
       <SwiperSlide>
         <Main />
       </SwiperSlide>
       <SwiperSlide>
-        <Main />
+        <About />
       </SwiperSlide>
       <SwiperSlide>
-        <Main />
+        <Works />
       </SwiperSlide>
       <SwiperSlide>
-        <Main />
+        <Price />
       </SwiperSlide>
       <SwiperSlide>
-        <Main />
+        <Contacts />
       </SwiperSlide>
     </Swiper>
   );
