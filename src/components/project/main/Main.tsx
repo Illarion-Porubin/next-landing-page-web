@@ -1,9 +1,8 @@
-// import Image from "next/image";
 import React from "react";
 
 const Main = () => {
   return (
-    <div className="flex text-white w-full h-screen bg-cover bg-no-repeat bg-center bg-[url('/bg-vector.svg')] items-center justify-center px-20">
+    <div className="flex text-white w-full h-screen bg-cover bg-no-repeat bg-center bg-[url('/bg-vector.svg')] items-center justify-center px-[18%]">
       <div className="w-full h-auto text-left relative flex flex-col items-start justify-start">
         <p>
           Lead is a digital innovation studio that leverages best-in-class
