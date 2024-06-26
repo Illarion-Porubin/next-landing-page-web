@@ -1,7 +1,13 @@
+"use server"
+
 import UserInfo from "@/components/dashboard/userInfo/UserInfo";
 
+
+
 const UserPage = () => {
-  return <UserInfo />;
+  return (
+    <UserInfo/>
+  )
 };
 
 export default UserPage;

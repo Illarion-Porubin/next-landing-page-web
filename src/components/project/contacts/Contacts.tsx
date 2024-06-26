@@ -1,13 +1,17 @@
+import { IContacts } from "@/types";
 import Image from "next/image";
 import React from "react";
 
+interface Props {
+  contacts: IContacts
+}
 interface FormData {
   name: { value: string };
   email: { value: string };
   massage: { value: string };
 }
 
-const Contacts = () => {
+const Contacts:React.FC<Props> = ({contacts}) => {
   const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { name, email, massage } = e.target as typeof e.target & FormData;
@@ -15,7 +19,8 @@ const Contacts = () => {
     console.log(email.value);
     console.log(massage.value);
   };
-
+  
+  if(contacts)
   return (
     <div className="mx-16 pr-16 text-white flex w-full h-screen justify-center items-center relative border-l-[1px]" id="contacts">
       <h2 className="text-[30px] font-[800] leading[109%] tracking-[0.13em] uppercase rotate-[270deg] absolute top-[72%] left-[-72px]">
@@ -23,8 +28,8 @@ const Contacts = () => {
       </h2>
       <div className="flex flex-col w-full h-auto items-star justify-around px-[15%]">
         <div className="mb-10">
-          <h1 className="text-left">Contact us</h1>
-          <p className="text-left">Let’s get to the nex level together</p>
+          <h1 className="text-left">{contacts.title}</h1>
+          <p className="text-left">{contacts.desc}</p>
         </div>
 
         <div className="w-full h-full flex justify-between items-center">
@@ -53,7 +58,7 @@ const Contacts = () => {
                   className=" absolute left-6 top-[-10px] font-[500] text-[15px] leading-[109%] tracking-[0.1em] bg-black px-4"
                   htmlFor="email"
                 >
-                  Full name
+                  Email
                 </label>
                 <input
                   className="bg-transparent w-full h-[43px]"
@@ -68,7 +73,7 @@ const Contacts = () => {
                   className=" absolute left-6 top-[-10px] font-[500] text-[15px] leading-[109%] tracking-[0.1em] bg-black px-4"
                   htmlFor="massage"
                 >
-                  Full name
+                  How can we help?
                 </label>
                 <textarea
                   className="bg-transparent resize-none w-full h-[85px] mt-[10px]"
@@ -88,13 +93,13 @@ const Contacts = () => {
           <div className="flex flex-col text-left max-w-[370px]">
             <div className="flex flex-col">
               <div className="mb-[15px] font-[400] text-[16px] leading-[132%]">
-                <a href="tel:">+1 (647)-563-9114</a>
+                <a href="tel:">{contacts.phone}</a>
               </div>
               <div className="mb-[15px] font-[400] text-[16px] leading-[132%]">
-                <a href="mailto:">lead@gmail.com</a>
+                <a href="mailto:">{contacts.email}</a>
               </div>
               <div className="mb-[15px] font-[400] text-[16px] leading-[132%]">
-                <p>Margaretenstraße 70/3, 1050 Vienna, Austria</p>
+                <p>{contacts.address}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-5  w-[374px] h-auto">
@@ -130,7 +135,7 @@ const Contacts = () => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <g clip-path="url(#clip0_34_4841)">
+                    <g clipPath="url(#clip0_34_4841)">
                       <path
                         d="M13.6822 13.471C13.6822 11.8672 12.5911 11.8672 12.5911 11.8672H12.0134H8.10205V15.3086H12.3128C13.0405 15.3082 13.6822 15.0755 13.6822 13.471Z"
                         fill="white"
@@ -161,7 +166,7 @@ const Contacts = () => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <g clip-path="url(#clip0_34_4838)">
+                    <g clipPath="url(#clip0_34_4838)">
                       <path
                         d="M17.5 0C7.83499 0 0 7.61113 0 17C0 26.3889 7.83499 34 17.5 34C27.165 34 35 26.3889 35 17C35 7.61113 27.165 0 17.5 0ZM24.1763 8.65739L21.7559 8.65843C19.8578 8.65843 19.4908 9.53461 19.4908 10.8202V13.655H24.017L24.0148 18.095H19.4912V29.489H14.7702V18.095H10.8237V13.655H14.7702V10.3805C14.7702 6.58052 17.1602 4.51096 20.6495 4.51096L24.1767 4.51617V8.65739H24.1763Z"
                         fill="white"
@@ -180,7 +185,7 @@ const Contacts = () => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <g clip-path="url(#clip0_34_4834)">
+                    <g clipPath="url(#clip0_34_4834)">
                       <path
                         d="M21.4453 17C21.4453 18.7971 19.9028 20.2539 18 20.2539C16.0972 20.2539 14.5547 18.7971 14.5547 17C14.5547 15.2029 16.0972 13.7461 18 13.7461C19.9028 13.7461 21.4453 15.2029 21.4453 17Z"
                         fill="white"

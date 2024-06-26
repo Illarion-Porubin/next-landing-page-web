@@ -1,16 +1,22 @@
+import { IMain } from "@/types";
 import React from "react";
 
-const Main = () => {
+interface Props {
+  main: IMain;
+}
+
+const Main:React.FC<Props> = ({main}) => {
   return (
     <div className="flex text-white w-full h-screen bg-cover bg-no-repeat bg-center bg-[url('/bg-vector.svg')] items-center justify-center px-[18%]">
       <div className="w-full h-auto text-left relative flex flex-col items-start justify-start">
-        <p>
-          Lead is a digital innovation studio that leverages best-in-class
-          <span className="block">strategy, design and development</span>
+        <p className="">
+          {main.desc}
+          {/* Lead is a digital innovation studio that leverages best-in-class
+          <span className="block">strategy, design and development</span> */}
         </p>
         <h1 className="text-[100px] font-light font-['Potra'] leading-[109%] tracking-[0.015em] uppercase">
-          We rethink
-          <span className="font-sans font-black block">the web</span>
+          {main.title_firstPart}
+          <span className="font-sans font-black block">{main.title_secondPart}</span>
         </h1>
         <button className="size-[160px] rounded-[100%] bg-[#fb1b3d] absolute left-0 bottom-[-120px] shadow_circle">
           <span className="relative w-full">

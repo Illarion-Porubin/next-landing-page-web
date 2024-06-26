@@ -10,11 +10,27 @@ import "swiper/css/scrollbar";
 
 import Main from "@/components/project/main/Main";
 import About from "@/components/project/about/About";
-import Works from "@/components/project/works/Works";
 import Price from "@/components/project/price/price";
 import Contacts from "@/components/project/contacts/Contacts";
+import { Content } from "./actions";
+import { IContent, IProject } from "@/types";
+import Portfolio from "@/components/project/portfolio/Portfolio";
 
 export default function Home() {
+  const [contetnt, setContent] = React.useState<IProject | null>(null)
+
+  const fetchGetContent = async () => {
+    const data: IContent = await Content();
+    setContent(data.project)
+  } 
+
+  React.useEffect(() => {
+    fetchGetContent()
+  }, [])
+
+  console.log(contetnt);
+
+  if(contetnt)
   return (
     <Swiper
       direction={"vertical"}
@@ -24,19 +40,19 @@ export default function Home() {
       modules={[Pagination]}
     >
       <SwiperSlide>
-        <Main />
+        <Main main={contetnt.main}/>
       </SwiperSlide>
       <SwiperSlide>
-        <About />
+        <About about={contetnt.about}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Works />
+        <Portfolio portfolio={contetnt.portfolio}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Price />
+        <Price prices={contetnt.prices}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Contacts />
+        <Contacts contacts={contetnt.contacts}/>
       </SwiperSlide>
     </Swiper>
   );
