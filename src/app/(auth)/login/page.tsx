@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react";
-import { IForm } from "../../../types";
 import Link from "next/link";
 
 
@@ -17,7 +16,7 @@ const Login = () => {
         <h3 className="my-4 text-white">Авторизация</h3>
 
         <form className="flex flex-col items-center justify-center w-full h-full">
-        {formInput.map((item: IForm) => (
+        {formInput.map((item: {labe: string, type: string, placeholder: string}) => (
             <label className="flex flex-col mb-4" key={item.labe}>
               <span className="text-sm text-slate-300 mb-1">{item.labe}</span>
               <input

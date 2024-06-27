@@ -1,8 +1,55 @@
+"use server"
+
 import { User, Content } from "./models";
 import { connectToDb } from "./index";
 import { unstable_noStore as noStore } from "next/cache";
+import UserDto from "./dtos/user-dto";
+import bcrypt from "bcrypt";
+import {v4} from "uuid";
+import { generateTokens, saveToken } from "./services/tokenService";
+import { NextResponse } from "next/server";
 
 
+//user
+export const registration = async (data: { email: string, password: string, securePass: string }) => {
+  const { email, password, securePass } = data;
+  const candidate = await User.findOne({ email })
+  if (candidate) {
+    throw new Error('Ошибка регистрации')
+  }
+  else if (securePass !== process.env.SECURITY_PASSWORD) {
+    throw new Error('Не безопасный запрос')
+  }
+  else {
+    try {
+      const hashPassword = await bcrypt.hash(password, 3);
+      const activationLink = v4();
+      const user = await User.create({ email, password: hashPassword, activationLink });
+
+      const userDto = new UserDto(user)
+      const tokens = generateTokens({ ...userDto });
+
+      if (tokens?.refreshToken) {
+        await saveToken(userDto.id, tokens.refreshToken);
+      }
+      const userData = { ...tokens, user: userDto}
+      return userData.refreshToken
+  
+
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error);
+      } else {
+        console.log('Unexpected error', error);
+      }
+    }
+
+  }
+}
+//auth
+
+
+//content
 
 export const getUsers = async () => {
   // noStore();
@@ -39,7 +86,7 @@ export const updateContent = async (data: { value: string | undefined, label: st
     if (!content) {
       return 'Не найдено'
     }
-    await content.updateOne({user: {...content.user, [`${data.label}`]: data.value}})
+    await content.updateOne({ user: { ...content.user, [`${data.label}`]: data.value } })
     return await Content.findOne()
   } catch (err) {
     console.log(err);
@@ -59,6 +106,6 @@ export const getContent = async () => {
       throw new Error("Failed to fetch user!");
     } else {
       console.log('Unexpected error', err);
-    } 
+    }
   }
 };

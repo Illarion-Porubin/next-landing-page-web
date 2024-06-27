@@ -19,11 +19,12 @@ const Portfolio: React.FC<Props> = ({ portfolio }) => {
         </h2>
         <div className="works_wrap">
           <div className="works">
-            {portfolio.gallery.map((item: {link: string}) => (
-              <>
+            {portfolio.gallery.map((item: {link: string}, id: number) => (
+              <div key={id}>
                 <Link
                   href="/#"
                   className="w-[340px] h-[200px] flex items-center justify-center"
+                  
                 >
                   <Image
                     className="w-auto h-auto "
@@ -33,7 +34,7 @@ const Portfolio: React.FC<Props> = ({ portfolio }) => {
                     height={200}
                   />
                 </Link>
-              </>
+              </div>
             ))}
           </div>
         </div>

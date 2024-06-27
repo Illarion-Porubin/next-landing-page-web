@@ -1,4 +1,3 @@
-import { link } from "fs";
 import mongoose from "mongoose";
 
 const PhotoSchema = new mongoose.Schema({

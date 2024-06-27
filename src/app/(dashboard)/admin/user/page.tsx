@@ -2,8 +2,6 @@
 
 import UserInfo from "@/components/dashboard/userInfo/UserInfo";
 
-
-
 const UserPage = () => {
   return (
     <UserInfo/>
