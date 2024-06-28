@@ -1,6 +1,6 @@
 "use server"
 
-import { getContent } from "@/lib/data"
+import { getContent } from "@/lib/server/data"
 
 
 

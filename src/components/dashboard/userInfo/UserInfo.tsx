@@ -4,14 +4,15 @@ import React from "react";
 import empty from "../../../../public/dashboard/png/empty-avatar.png";
 import Image from "next/image";
 import { UerInfoList } from "./UerInfoList";
-import { Content, UContent } from "./actions";
-import { IContent, IUser, IUserInfo } from "@/types";
+// import { Content, UContent } from "./actions";
+import { IContent, IUser } from "@/types";
+import { contentController } from "@/lib/server/controllers/contentController";
 
 const UserInfo: React.FC = () => {
-  const [user, setUser] = React.useState<IUserInfo | null>(null);
+  const [user, setUser] = React.useState<IUser | null>(null);
 
   const fetchGetContent = async () => {
-    const data: IContent = await Content();
+    const data: IContent = await contentController.getContent();
     setUser(data.user);
   };
 
@@ -20,7 +21,7 @@ const UserInfo: React.FC = () => {
   }, []);
 
   const saveData = async (data: IUser) => {
-    const res: IContent = await UContent(data);
+    const res: IContent = await contentController.updateUserContent(data);
     setUser(res.user);
   };
 

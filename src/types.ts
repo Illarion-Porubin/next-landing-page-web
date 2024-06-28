@@ -26,6 +26,7 @@ export interface IService {
 
 export interface IContent {
   project: IProject;
+  user: IUser;
 }
 export interface IMain {
   desc: string;

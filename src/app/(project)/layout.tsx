@@ -2,7 +2,6 @@ import "../globals.scss";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import Navbar from "@/components/project/navBar/NavBar";
-import StoreProvider from "../StoreProvider";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -17,13 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <StoreProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <Navbar />
-          {children}
-        </body>
-      </html>
-    </StoreProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <Navbar />
+        {children}
+      </body>
+    </html>
   );
 }

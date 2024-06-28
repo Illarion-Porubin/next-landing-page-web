@@ -2,7 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { registration } from "@/lib/data";
+import { useRouter } from 'next/navigation'
+import { userController } from "@/lib/server/controllers/userController";
 
 interface FormData {
   email: { value: string };
@@ -12,6 +13,8 @@ interface FormData {
 }
 
 const Regist = () => {
+  const router = useRouter()
+
   const formInput = [
     { labe: "email", type: "text", placeholder: "email" },
     { labe: "password", type: "text", placeholder: "password" },
@@ -24,11 +27,13 @@ const Regist = () => {
     e.preventDefault();
     const { email, password, confermPass, secretKey } = e.target as typeof e.target & FormData;
     const data = { email: email.value, password: password.value, securePass: secretKey.value }
+  
     if(confermPass.value === password.value){
-      await registration(data);
-      // if(refreshToken){
-      //   document.cookie = `refreshToken=${refreshToken}; max-age=36`
-      // }
+      const refreshToken = await userController.registration(data);
+      if(refreshToken){
+        document.cookie = `refreshToken=${refreshToken}; max-age=36`;
+        router.push('/login')
+      }
     }
     else{
       window.alert("Пароли не совпадают") 

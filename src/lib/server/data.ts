@@ -2,12 +2,11 @@
 
 import { User, Content } from "./models";
 import { connectToDb } from "./index";
-import { unstable_noStore as noStore } from "next/cache";
 import UserDto from "./dtos/user-dto";
 import bcrypt from "bcrypt";
 import {v4} from "uuid";
 import { generateTokens, saveToken } from "./services/tokenService";
-import { NextResponse } from "next/server";
+
 
 
 //user
@@ -79,20 +78,7 @@ export const updateUser = async (data: { email: string, password: string }) => {
   }
 };
 
-export const updateContent = async (data: { value: string | undefined, label: string }) => {
-  try {
-    connectToDb();
-    const content = await Content.findOne();
-    if (!content) {
-      return 'Не найдено'
-    }
-    await content.updateOne({ user: { ...content.user, [`${data.label}`]: data.value } })
-    return await Content.findOne()
-  } catch (err) {
-    console.log(err);
-    // throw new Error("Failed to fetch user!");
-  }
-};
+
 
 
 export const getContent = async () => {
