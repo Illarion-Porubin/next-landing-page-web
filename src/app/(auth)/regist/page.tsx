@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
-import { userController } from "@/lib/server/controllers/userController";
+import axios from "axios";
 
 interface FormData {
   email: { value: string };
@@ -26,14 +26,23 @@ const Regist = () => {
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, password, confermPass, secretKey } = e.target as typeof e.target & FormData;
-    const data = { email: email.value, password: password.value, securePass: secretKey.value }
-  
+    
     if(confermPass.value === password.value){
-      const refreshToken = await userController.registration(data);
-      if(refreshToken){
-        document.cookie = `refreshToken=${refreshToken}; max-age=36`;
-        router.push('/login')
-      }
+      const res = await axios.post("/api/auth", { email: email.value, password: password.value, securePass: secretKey.value })
+      console.log(res);
+      // const response = await fetch('/api/auth', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     email: email.value,
+      //     password: password.value,
+      //     securePass:  secretKey.value
+      //   }),
+      // })
+      // const result = await response.json();
+      // console.log(result);
     }
     else{
       window.alert("Пароли не совпадают") 

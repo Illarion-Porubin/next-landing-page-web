@@ -9,6 +9,11 @@ export interface IUser {
   card: string;
 }
 
+export interface IUserForm {
+  value: string;
+  label: string;
+}
+
 export interface IProject {
   main: IMain;
   about: IAbout;

@@ -4,33 +4,32 @@ import React from "react";
 import empty from "../../../../public/dashboard/png/empty-avatar.png";
 import Image from "next/image";
 import { UerInfoList } from "./UerInfoList";
-// import { Content, UContent } from "./actions";
-import { IContent, IUser } from "@/types";
+import { IContent, IUser, IUserForm } from "@/types";
 import { contentController } from "@/lib/server/controllers/contentController";
 
 const UserInfo: React.FC = () => {
   const [user, setUser] = React.useState<IUser | null>(null);
 
-  const fetchGetContent = async () => {
-    const data: IContent = await contentController.getContent();
-    setUser(data.user);
-  };
+  // const fetchGetContent = async () => {
+  //   const data: IContent = await contentController.content();
+  //   setUser(data.user);
+  // };
 
-  React.useEffect(() => {
-    fetchGetContent();
-  }, []);
+  // React.useEffect(() => {
+  //   fetchGetContent();
+  // }, []);
 
-  const saveData = async (data: IUser) => {
-    const res: IContent = await contentController.updateUserContent(data);
+  const saveData = async (data: IUserForm) => {
+    const res: IContent = await contentController.updateUser(data);
     setUser(res.user);
   };
 
-  const userInterface: IUser[] = [
-    { value: user?.firstName, label: "firstName" },
-    { value: user?.lastName, label: "lastName" },
-    { value: user?.email, label: "email" },
-    { value: user?.phone, label: "phone" },
-    { value: user?.card, label: "card" },
+  const userInterface: IUserForm[] = [
+    { value: user?.firstName || '', label: "firstName" },
+    { value: user?.lastName || '', label: "lastName" },
+    { value: user?.email || '', label: "email" },
+    { value: user?.phone || '', label: "phone" },
+    { value: user?.card || '', label: "card" },
   ];
 
   return (
@@ -43,7 +42,7 @@ const UserInfo: React.FC = () => {
             alt="avatar"
           />
           {user &&
-            userInterface.map((item: IUser, id: number) => (
+            userInterface.map((item: IUserForm, id: number) => (
               <UerInfoList item={item} saveData={saveData} key={id} />
             ))}
         </div>

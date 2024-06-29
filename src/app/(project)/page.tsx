@@ -12,23 +12,21 @@ import Main from "@/components/project/main/Main";
 import About from "@/components/project/about/About";
 import Price from "@/components/project/price/price";
 import Contacts from "@/components/project/contacts/Contacts";
-import { Content } from "./actions";
 import { IContent, IProject } from "@/types";
 import Portfolio from "@/components/project/portfolio/Portfolio";
+import axios, { AxiosResponse } from "axios";
 
 export default function Home() {
   const [contetnt, setContent] = React.useState<IProject | null>(null)
 
   const fetchGetContent = async () => {
-    const data: IContent = await Content();
+    const {data}: AxiosResponse<IContent> = await axios("/api/content");
     setContent(data.project)
   } 
 
   React.useEffect(() => {
     fetchGetContent()
   }, [])
-
-  console.log(contetnt);
 
   if(contetnt)
   return (
