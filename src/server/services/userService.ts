@@ -1,31 +1,27 @@
 "use server"
 
-import { User, } from "../models/user-model";
-import bcrypt from "bcrypt";
 import * as uuid from "uuid";
+import bcrypt from "bcrypt";
 import UserDto from "../dtos/user-dto";
+import { User, } from "../models/admin-model";
 import { connectToDb } from "..";
-import { generateTokens, saveToken } from "./tokenService";
-
+import { findToken, generateTokens, saveToken, validateRefreshToken } from "./tokenService";
+import { Token } from "../models/token-model";
+import { IAdmin, IUser } from "@/types";
 
 
 export const registration = async (data: {email: string, password: string, securePass: string}) => {
-    console.log(data, 'da');
     connectToDb();
     const {email, password, securePass} = data;
     const candidate = await User.findOne({ email })
-    console.log(1);
 
     if (candidate) {
-        console.log(2);
-
-        throw new TypeError('Ошибка регистрации')
+        return false
     }
     else if (securePass !== process.env.SECURITY_PASSWORD) {
-        throw new TypeError('Не безопасный запрос')
+        return false
     }
     else {
-        console.log(3);
         const hashPassword = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4();
 
@@ -34,10 +30,7 @@ export const registration = async (data: {email: string, password: string, secur
         const userDto = new UserDto(user)
         const tokens = await generateTokens({ ...userDto });
         await saveToken(userDto.id, tokens.refreshToken);
-        return JSON.parse(JSON.stringify({
-            ...tokens,
-            user: userDto
-        }));
+        return JSON.parse(JSON.stringify(tokens.refreshToken));
     }
 }
 
@@ -52,3 +45,50 @@ export const getUsers = async () => {
         throw new TypeError("Failed to fetch - getUsers!");
     }
 };
+
+export const login = async (data: {email: string, password: string}) =>{
+    const user = await User.findOne({ email: data.email });
+    if (!user) {
+        return false
+    }
+
+    const isPassEquals = await bcrypt.compare(data.password, user.password);
+    if (!isPassEquals) {
+        return false
+    }
+
+    const userDto = new UserDto(user);
+    const tokens = await generateTokens({ ...userDto });
+    await saveToken(userDto.id, tokens.refreshToken);
+
+    return {
+        accessToken: tokens.accessToken,
+        user: userDto
+    }
+}
+
+export const refresh = async (refreshToken: string) => {
+    if (!refreshToken) {
+        return false
+    }
+
+    const userData: any = validateRefreshToken(refreshToken);
+    console.log(userData);
+
+
+    const tokenFromDb = await findToken(refreshToken);
+
+    if (!userData || !tokenFromDb) {
+        return false
+    }
+
+    const user = await User.findById(userData.id)
+    const userDto = new UserDto(user);
+    const tokens = await generateTokens({ ...userDto });
+    await saveToken(userDto.id, tokens.refreshToken);
+
+    return {
+        ...tokens,
+        user: userDto
+    }
+}

@@ -12,23 +12,22 @@ import Main from "@/components/project/main/Main";
 import About from "@/components/project/about/About";
 import Price from "@/components/project/price/price";
 import Contacts from "@/components/project/contacts/Contacts";
-import { IContent, IProject } from "@/types";
 import Portfolio from "@/components/project/portfolio/Portfolio";
-import axios, { AxiosResponse } from "axios";
+import { useCustomDispatch, useCustomSelector } from "@/hooks/store";
+import { selectContentData } from "@/lib/redux/selectors";
+import { fetchGetContent } from "@/lib/redux/slices/contentSlice";
 
 export default function Home() {
-  const [contetnt, setContent] = React.useState<IProject | null>(null)
+  const dispatch = useCustomDispatch();
+  const data = useCustomSelector(selectContentData);
 
-  const fetchGetContent = async () => {
-    const {data}: AxiosResponse<IContent> = await axios("/api/content");
-    setContent(data.project)
-  } 
 
   React.useEffect(() => {
-    fetchGetContent()
-  }, [])
+    dispatch(fetchGetContent())
+  }, [dispatch])
 
-  if(contetnt)
+  
+  if(data.isLoading === "loaded" && data.data?.project)
   return (
     <Swiper
       direction={"vertical"}
@@ -38,19 +37,19 @@ export default function Home() {
       modules={[Pagination]}
     >
       <SwiperSlide>
-        <Main main={contetnt.main}/>
+        <Main main={data.data.project.main}/>
       </SwiperSlide>
       <SwiperSlide>
-        <About about={contetnt.about}/>
+        <About about={data.data.project.about}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Portfolio portfolio={contetnt.portfolio}/>
+        <Portfolio portfolio={data.data.project.portfolio}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Price prices={contetnt.prices}/>
+        <Price prices={data.data.project.prices}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Contacts contacts={contetnt.contacts}/>
+        <Contacts contacts={data.data.project.contacts}/>
       </SwiperSlide>
     </Swiper>
   );

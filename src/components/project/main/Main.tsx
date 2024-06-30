@@ -6,6 +6,8 @@ interface Props {
 }
 
 const Main:React.FC<Props> = ({main}) => {
+
+  if(main)
   return (
     <div className="flex text-white w-full h-screen bg-cover bg-no-repeat bg-center bg-[url('/bg-vector.svg')] items-center justify-center px-[18%]">
       <div className="w-full h-auto text-left relative flex flex-col items-start justify-start">

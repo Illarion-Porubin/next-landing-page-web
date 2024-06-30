@@ -2,6 +2,7 @@
 
 
 export interface IUser {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -65,4 +66,15 @@ export interface IContacts {
   phone: string;
   email: string;
   address: string;
+}
+
+export interface IAdmin {
+  accessToken: string;
+  user: {
+    id: string;
+    email: string;
+    password: string;
+    isAdmin: boolean;
+    isActivated: boolean;
+  }
 }

@@ -1,11 +1,13 @@
+import { IAdmin } from "@/types";
+
 class UserDto {
-    id: string;
-    admin: boolean;
+    id: string
+    isAdmin: boolean;
     isActivated: boolean;
 
-    constructor(model){
-        this.id = model._id;
-        this.admin = model.admin;
+    constructor(model: IAdmin){
+        this.id = model.id;
+        this.isAdmin = model.isAdmin;
         this.isActivated = model.isActivated
     }
 }

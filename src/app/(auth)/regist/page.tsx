@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import React from "react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 interface FormData {
@@ -13,7 +13,7 @@ interface FormData {
 }
 
 const Regist = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const formInput = [
     { labe: "email", type: "text", placeholder: "email" },
@@ -22,30 +22,30 @@ const Regist = () => {
     { labe: "secretKey", type: "text", placeholder: "secretkey" },
   ];
 
-
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { email, password, confermPass, secretKey } = e.target as typeof e.target & FormData;
-    
-    if(confermPass.value === password.value){
-      const res = await axios.post("/api/auth", { email: email.value, password: password.value, securePass: secretKey.value })
-      console.log(res);
-      // const response = await fetch('/api/auth', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     email: email.value,
-      //     password: password.value,
-      //     securePass:  secretKey.value
-      //   }),
-      // })
-      // const result = await response.json();
-      // console.log(result);
-    }
-    else{
-      window.alert("Пароли не совпадают") 
+    const { email, password, confermPass, secretKey } =
+      e.target as typeof e.target & FormData;
+
+    if (confermPass.value === password.value) {
+      // const res = await axios.post("/api/auth", { email: email.value, password: password.value, securePass: secretKey.value })
+      const response = await fetch("/api/regist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value,
+          securePass: secretKey.value,
+        }),
+      });
+
+      if (response.status === 200) {
+        router.push("/login");
+      }
+    } else {
+      window.alert("Пароли не совпадают");
     }
   };
 
@@ -54,19 +54,24 @@ const Regist = () => {
       <div className="flex flex-col items-center justify-between w-[280px] h-auto rounded-xl p-6 bg-slate-600  text-black">
         <h3 className="my-4 text-white">Регистрация</h3>
 
-        <form className="flex flex-col items-center justify-center w-full h-full" onSubmit={(e) => formHandler(e)}>
-          {formInput.map((item: {labe: string, type: string, placeholder: string}) => (
-            <label className="flex flex-col mb-4" key={item.labe}>
-              <span className="text-sm text-slate-300 mb-1">{item.labe}</span>
-              <input
-                className="w-full text-black"
-                id={item.labe}
-                name={item.labe}
-                type={item.type}
-                placeholder={item.placeholder}
-              />
-            </label>
-          ))}
+        <form
+          className="flex flex-col items-center justify-center w-full h-full"
+          onSubmit={(e) => formHandler(e)}
+        >
+          {formInput.map(
+            (item: { labe: string; type: string; placeholder: string }) => (
+              <label className="flex flex-col mb-4" key={item.labe}>
+                <span className="text-sm text-slate-300 mb-1">{item.labe}</span>
+                <input
+                  className="w-full text-black"
+                  id={item.labe}
+                  name={item.labe}
+                  type={item.type}
+                  placeholder={item.placeholder}
+                />
+              </label>
+            )
+          )}
           <button
             className="p-2 bg-white w-[100px] h-8 rounded-sm text-sm leading-[1px]"
             type="submit"
@@ -74,10 +79,7 @@ const Regist = () => {
             войти
           </button>
         </form>
-        <Link
-          className="text-sm mt-6 text-white"
-          href={"/login"}
-        >
+        <Link className="text-sm mt-6 text-white" href={"/login"}>
           Есть аккаунт?
         </Link>
       </div>
@@ -85,4 +87,4 @@ const Regist = () => {
   );
 };
 
-export default Regist
+export default Regist;
