@@ -1,5 +1,5 @@
 
-import { registration } from '@/server/services/userService';
+import { registration } from '@/server/services/authService';
 import { NextRequest, NextResponse } from 'next/server';
 
 

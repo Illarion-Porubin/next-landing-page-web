@@ -2,6 +2,8 @@ import { IAdmin } from "@/types";
 import { createSlice, createAsyncThunk, PayloadAction, Action } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
+
 export const fetchRegister = createAsyncThunk<{ status: number, message: string }, { email: string, password: string, confPass: string, securePass: string }, { rejectValue: { status: number, message: string } }>(
   "api/fetchRegist", async (params, { rejectWithValue }) => {
     const { data }: { data: { status: number, message: string } } = await axios.post("/api/regist", params);
@@ -17,9 +19,10 @@ export const fetchLogin = createAsyncThunk<IAdmin, { email: string, password: st
     if (!data) {
       return rejectWithValue("Server Error!");
     }
-    if (data.accessToken && "accessToken" in data) {
-      window.localStorage.setItem('token', data.accessToken)
-      // window.location.replace('/admin')
+    console.log(data);
+    if (data.accessToken && "accessToken" in data && data.user.isActivated && data.user.isAdmin) {
+        window.localStorage.setItem('token', data.accessToken)
+        window.location.replace('/admin/user')
     }
     return data;
   }

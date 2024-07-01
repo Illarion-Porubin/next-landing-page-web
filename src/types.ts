@@ -68,13 +68,14 @@ export interface IContacts {
   address: string;
 }
 
+export interface IUserInfo {
+  id: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+  isActivated: boolean;
+} 
 export interface IAdmin {
   accessToken: string;
-  user: {
-    id: string;
-    email: string;
-    password: string;
-    isAdmin: boolean;
-    isActivated: boolean;
-  }
+  user: IUserInfo;
 }

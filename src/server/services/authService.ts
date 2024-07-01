@@ -7,12 +7,13 @@ import { User, } from "../models/admin-model";
 import { connectToDb } from "..";
 import { findToken, generateTokens, saveToken, validateRefreshToken } from "./tokenService";
 import { Token } from "../models/token-model";
-import { IAdmin, IUser } from "@/types";
+import { IUserInfo } from "@/types";
+import * as jwt from "jsonwebtoken";
 
 
-export const registration = async (data: {email: string, password: string, securePass: string}) => {
+export const registration = async (data: { email: string, password: string, securePass: string }) => {
     connectToDb();
-    const {email, password, securePass} = data;
+    const { email, password, securePass } = data;
     const candidate = await User.findOne({ email })
 
     if (candidate) {
@@ -36,8 +37,8 @@ export const registration = async (data: {email: string, password: string, secur
 
 export const getUsers = async () => {
     // noStore();
+    connectToDb();
     try {
-        connectToDb();
         const users = await User.find();
         return users;
     } catch (err) {
@@ -46,7 +47,7 @@ export const getUsers = async () => {
     }
 };
 
-export const login = async (data: {email: string, password: string}) =>{
+export const login = async (data: { email: string, password: string }) => {
     const user = await User.findOne({ email: data.email });
     if (!user) {
         return false
@@ -67,13 +68,32 @@ export const login = async (data: {email: string, password: string}) =>{
     }
 }
 
+export const checkMe = async (value: { token: string }) => {
+    try {
+        if (value.token) {
+            const access = jwt.verify(value.token, process.env.JWT_ACCESS_SECRET!) as jwt.JwtPayload;
+            if (access) {
+                const user: IUserInfo | null = await User.findById(access.id)
+                return user?.isAdmin && user?.isActivated
+            }
+            return false
+        }
+        else {
+            return false
+        }
+    }
+    catch (error) {
+        return false
+    }
+}
+
 export const refresh = async (refreshToken: string) => {
     if (!refreshToken) {
         return false
     }
 
     const userData: any = validateRefreshToken(refreshToken);
-    console.log(userData);
+    // console.log(userData);
 
 
     const tokenFromDb = await findToken(refreshToken);

@@ -5,6 +5,7 @@ import axios from 'axios';
 
 
 
+
 export const fetchGetContent = createAsyncThunk<any, undefined, { rejectValue: string }>(
   "api/fetchGetContent", async (_, { rejectWithValue }) => {
     const { data } = await axios.get("/api/content");
