@@ -1,5 +1,31 @@
 import mongoose from "mongoose";
 
+const about = {
+  images: {
+    image_0: "/",
+    image_1: "/",
+    image_2: "/",
+  },
+  textContent: [
+    {value: "", type: "decr", explan: "описаие", label: "description"},
+    {value: "", type: "decr", explan: "первая часть заголовка", label: "title_firstPart"},
+    {value: "", type: "text", explan: "вторая часть заголовка", label: "title_secondPart"},
+  ]
+} 
+
+// нужно проверить не будет ли пробелм динамичкском получении данных по ключу
+
+// gallery || slider
+const gallery = [
+  {link: "/"},
+  {link: "/"},
+]
+
+// services || products
+const services = [
+  {desc: "desc", image: "image", price: "price", title: "title"},
+]
+
 const PhotoSchema = new mongoose.Schema({
     link: { type: String }
   });

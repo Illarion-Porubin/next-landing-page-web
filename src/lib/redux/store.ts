@@ -15,11 +15,13 @@ export const store = configureStore({
     reducer: rootReducer,
 })
 
-// export const makeStore = () => {
-//   return configureStore({
-//     reducer: rootReducer
+// export const store = configureStore({
+//     reducer: rootReducer,
+//     middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: false
+//     }),
 //   })
-// }
 
 // Infer the type of makeStore
 // export type AppStore = ReturnType<typeof makeStore>

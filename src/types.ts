@@ -2,12 +2,12 @@
 
 
 export interface IUser {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  card: string;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  card?: string;
 }
 
 export interface IUserForm {
@@ -31,7 +31,7 @@ export interface IService {
 }
 
 export interface IContent {
-  project: IProject;
+  project?: IProject;
   user: IUser;
 }
 export interface IMain {

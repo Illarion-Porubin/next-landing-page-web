@@ -5,9 +5,9 @@ import React from 'react';
 const ContentPage = () => {
     return (
         <div>
-            <Content />;
+            <Content />
         </div>
-    );
+    )
 }
 
 export default ContentPage;

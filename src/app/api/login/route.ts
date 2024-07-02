@@ -14,20 +14,20 @@ interface IResUser {
 }
 
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, res: NextResponse) {
     const body: { email: string, password: string } = await req.json();
 
     try {
-        const res: IResUser | false = await login(body);
-        if (res) {
-            if (res.user.isAdmin && res.user.isActivated) {
-                cookies().set('accessToken', res.accessToken, {
+        const data: IResUser | false = await login(body);
+        if (data) {
+            if (data.user.isAdmin && data.user.isActivated) {
+                cookies().set('accessToken', data.accessToken, {
                     httpOnly: false,
-                    maxAge: 60 * 2,
+                    maxAge: 60 * 15,
                     sameSite: 'strict',
                     path: "/"
                 });
-                return NextResponse.json({ ...res });
+                return NextResponse.json({ ...data });
             }
             else{
                 return NextResponse.json({ error: 'Ошибка входа' , status: 400 });

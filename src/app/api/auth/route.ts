@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     try {
         const res:boolean | undefined = await checkMe(token);   
         if(res) {
-            return NextResponse.json({ message: res, status: 200 });;
+            return NextResponse.json({ message: res, status: 200 });
         }
         else {
             return NextResponse.json({ message: res, status: 400 });

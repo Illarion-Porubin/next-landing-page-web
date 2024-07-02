@@ -6,14 +6,22 @@ import axios from 'axios';
 
 
 
-export const fetchGetContent = createAsyncThunk<any, undefined, { rejectValue: string }>(
+export const fetchGetContent = createAsyncThunk<IContent, undefined, { rejectValue: string }>(
   "api/fetchGetContent", async (_, { rejectWithValue }) => {
     const { data } = await axios.get("/api/content");
     if (!data) {
       return rejectWithValue("Server Error!");
     }
-    const content: any = data
-    return content;
+    return data;
+});
+
+export const fetchUpdateUserContent = createAsyncThunk<IContent,{value: string; label: string}, { rejectValue: string }>(
+  "api/fetchUpdateUserContent", async (params, { rejectWithValue }) => {
+    const { data } = await axios.put("/api/content", params);
+    if (!data) {
+      return rejectWithValue("Server Error!");
+    }
+    return data;
 });
 
 
@@ -33,7 +41,9 @@ export const contentSlice = createSlice({
   name: 'mainContent',
   initialState,
   reducers: {
-    
+    saveContent: (state, action) => {
+      state.data = ({...state.data, user: {...state?.data?.user, [`${action.payload.label}`]: action.payload.value}});
+    },
   },
   extraReducers: (builder) => {
     builder

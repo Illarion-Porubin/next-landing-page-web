@@ -1,5 +1,6 @@
 
 import { getContent } from '@/server/controllers/content-controller';
+import { updateUserContent } from '@/server/services/contentService';
 import { IProject } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,6 +11,24 @@ export async function GET() {
       return NextResponse.json({ error: 'Content not found' }, { status: 404 });
     }
     return NextResponse.json(content, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const request = await req.json();
+  
+  if (!request.value || !request.label) {
+    return NextResponse.json({ error: 'No data found' }, { status: 400 });
+  }
+
+  try {
+    const data = await updateUserContent(request);
+    if (!data) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+    return NextResponse.json({ ...data });
   } catch (error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
@@ -32,26 +51,7 @@ export async function GET() {
 //   }
 // }
 
-// export async function PUT(req: NextRequest) {
-//   const { email, password } = await req.json();
 
-//   if (!email || !password) {
-//     return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
-//   }
-
-//   try {
-//     const emailExists = await checkEmailExists(email);
-//     if (!emailExists) {
-//       return NextResponse.json({ error: 'User not found' }, { status: 404 });
-//     }
-
-//     await updateUserByEmail(email, { password });
-
-//     return NextResponse.json({ message: 'User updated successfully' }, { status: 200 });
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-//   }
-// }
 
 // export async function PATCH(req: NextRequest) {
 //   const { email, password } = await req.json();
