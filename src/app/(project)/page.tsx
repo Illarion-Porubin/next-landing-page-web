@@ -21,6 +21,9 @@ export default function Home() {
   const dispatch = useCustomDispatch();
   const data = useCustomSelector(selectContentData);
 
+  //сделать фильтрацию. Пример: если есть слайдер, то показывать кнопку для слайдера, иначе null
+
+
 
   React.useEffect(() => {
     dispatch(fetchGetContent())

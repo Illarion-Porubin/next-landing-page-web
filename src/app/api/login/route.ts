@@ -23,7 +23,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             if (data.user.isAdmin && data.user.isActivated) {
                 cookies().set('accessToken', data.accessToken, {
                     httpOnly: false,
-                    maxAge: 60 * 15,
+                    maxAge: 60 * 15 * 1000,
                     sameSite: 'strict',
                     path: "/"
                 });

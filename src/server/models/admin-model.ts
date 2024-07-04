@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-const UserSchema = new mongoose.Schema(
+const AdminSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -11,18 +11,32 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      required: true,
+      unique: true,
     },
     isAdmin: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     isActivated: {
       type: Boolean,
-      default: false,
+      default: true,
     }
   },
   { timestamps: true }
 );
 
 
-export const User = mongoose.models?.User || mongoose.model("User", UserSchema);
+export const Admin = mongoose.models?.Admin || mongoose.model("Admin", AdminSchema);
+
+const checkContent = async () => {
+  console.log('Admin <<<<<<<<');
+  const Admin = mongoose.model('Admin')
+  const content = await Admin.findOne()
+  if (!content) {
+    const contents = new Admin()
+    contents.save()
+  }
+}
+
+checkContent()

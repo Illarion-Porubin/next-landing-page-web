@@ -1,17 +1,16 @@
 "use client"
 
 import React from "react";
-import { ISiteInfo } from "../../../types";
+import { ISContent } from "../../../types";
 import acept from "../../../../public/dashboard/png/check.png";
 import clear from "../../../../public/dashboard/svg/delete.svg";
 import Image from "next/image";
 
 interface Props {
-  item: ISiteInfo;
-  sort: string;
+  item: ISContent;
 }
 
-export const ContentList: React.FC<Props> = ({ item, sort }) => {
+export const ContentList: React.FC<Props> = ({ item  }) => {
   const [text, setText] = React.useState(item.value);
 
   const saveData = () => {
@@ -26,10 +25,10 @@ export const ContentList: React.FC<Props> = ({ item, sort }) => {
     <>
       <div
         className="flex flex-col w-full min-h-16 border-x-neutral-600 mb-6"
-        key={item.title}
+        key={item.label}
       >
-        <label className="text-sm text-slate-500" htmlFor={item.title}>
-          {item.title}
+        <label className="text-sm text-slate-500 uppercase mb-4" htmlFor={item.value}>
+          {item.explan}
         </label>
         <div className="flex flex-row items-center justify-center relative">
           <button className={`absolute right-8 top-[-30px] ${text !== item.value ? "opacity-1" : "opacity-0"}`} onClick={() => saveData()}>
@@ -38,9 +37,9 @@ export const ContentList: React.FC<Props> = ({ item, sort }) => {
           <button className={`absolute right-0 top-[-30px] ${text !== item.value ? "opacity-1" : "opacity-0"}`} onClick={() => deleteData()}>
             <Image className="w-[24px]" src={clear} alt="clear" />
           </button>
-          {sort === "Текст" ? (
+          {item.type === "text" ? (
             <input
-              id={item.title}
+              id={item.value}
               className="w-full"
               type="text"
               value={text}
@@ -49,7 +48,7 @@ export const ContentList: React.FC<Props> = ({ item, sort }) => {
           ) : (
             <textarea
               className="w-full h-40 resize-none mb-10"
-              id={item.title}
+              id={item.value}
               value={text}
               onChange={(e) => setText(e.target.value)}
             />

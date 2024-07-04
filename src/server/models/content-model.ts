@@ -1,30 +1,7 @@
 import mongoose from "mongoose";
 
-const about = {
-  images: {
-    image_0: "/",
-    image_1: "/",
-    image_2: "/",
-  },
-  textContent: [
-    {value: "", type: "decr", explan: "описаие", label: "description"},
-    {value: "", type: "decr", explan: "первая часть заголовка", label: "title_firstPart"},
-    {value: "", type: "text", explan: "вторая часть заголовка", label: "title_secondPart"},
-  ]
-} 
+//разбить на категории: содержимое, картинки, галерея, слайдер, текстовый слайдер, сервисы.
 
-// нужно проверить не будет ли пробелм динамичкском получении данных по ключу
-
-// gallery || slider
-const gallery = [
-  {link: "/"},
-  {link: "/"},
-]
-
-// services || products
-const services = [
-  {desc: "desc", image: "image", price: "price", title: "title"},
-]
 
 const PhotoSchema = new mongoose.Schema({
     link: { type: String }
@@ -234,6 +211,7 @@ const PhotoSchema = new mongoose.Schema({
   export const Content = mongoose.models?.Content || mongoose.model("Content", ContentSchema);
 
   const checkContent = async () => {
+    console.log('Content <<<<<<<<');
     const Contents = mongoose.model('Content')
     const content = await Contents.findOne()
     if (!content) {

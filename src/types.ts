@@ -1,5 +1,42 @@
 
 
+export interface ISection {
+  photoSlider?: string[];
+  gallery?: string[];
+  images?: string[];
+  contentSlider?: { link: string, value: string }[];
+  content?: {
+    value: string;
+    type: string;
+    explan: string;
+    label: string;
+  }[];
+  services?: { desc: string, image: string, price: string, title: string }[];
+}
+
+export interface ISContent {
+  value: string;
+  type: string;
+  explan: string;
+  label: string;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////
+
 
 export interface IUser {
   id?: string;
@@ -74,7 +111,7 @@ export interface IUserInfo {
   password: string;
   isAdmin: boolean;
   isActivated: boolean;
-} 
+}
 export interface IAdmin {
   accessToken: string;
   user: IUserInfo;

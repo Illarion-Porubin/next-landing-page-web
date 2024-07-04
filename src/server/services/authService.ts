@@ -3,10 +3,9 @@
 import * as uuid from "uuid";
 import bcrypt from "bcrypt";
 import UserDto from "../dtos/user-dto";
-import { User, } from "../models/admin-model";
+import { Admin } from "../models/admin-model";
 import { connectToDb } from "..";
 import { findToken, generateTokens, saveToken, validateRefreshToken } from "./tokenService";
-import { Token } from "../models/token-model";
 import { IUserInfo } from "@/types";
 import * as jwt from "jsonwebtoken";
 
@@ -14,7 +13,7 @@ import * as jwt from "jsonwebtoken";
 export const registration = async (data: { email: string, password: string, securePass: string }) => {
     connectToDb();
     const { email, password, securePass } = data;
-    const candidate = await User.findOne({ email })
+    const candidate = await Admin.findOne({ email })
 
     if (candidate) {
         return false
@@ -26,7 +25,7 @@ export const registration = async (data: { email: string, password: string, secu
         const hashPassword = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4();
 
-        const user = await User.create({ email, password: hashPassword, activationLink });
+        const user = await Admin.create({ email, password: hashPassword, activationLink });
 
         const userDto = new UserDto(user)
         const tokens = await generateTokens({ ...userDto });
@@ -39,7 +38,7 @@ export const getUsers = async () => {
     // noStore();
     connectToDb();
     try {
-        const users = await User.find();
+        const users = await Admin.find();
         return users;
     } catch (err) {
         console.log(err);
@@ -48,7 +47,8 @@ export const getUsers = async () => {
 };
 
 export const login = async (data: { email: string, password: string }) => {
-    const user = await User.findOne({ email: data.email });
+    const user = await Admin.findOne({ email: data.email });
+    console.log(user);
     if (!user) {
         return false
     }
@@ -73,7 +73,7 @@ export const checkMe = async (value: { token: string }) => {
         if (value.token) {
             const access = jwt.verify(value.token, process.env.JWT_ACCESS_SECRET!) as jwt.JwtPayload;
             if (access) {
-                const user: IUserInfo | null = await User.findById(access.id)
+                const user: IUserInfo | null = await Admin.findById(access.id)
                 return user?.isAdmin && user?.isActivated
             }
             return false
@@ -102,7 +102,7 @@ export const refresh = async (refreshToken: string) => {
         return false
     }
 
-    const user = await User.findById(userData.id)
+    const user = await Admin.findById(userData.id)
     const userDto = new UserDto(user);
     const tokens = await generateTokens({ ...userDto });
     await saveToken(userDto.id, tokens.refreshToken);

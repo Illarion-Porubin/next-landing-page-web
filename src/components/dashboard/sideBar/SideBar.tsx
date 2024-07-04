@@ -1,22 +1,19 @@
-"use client"
+"use client";
 
 import React from "react";
 import arrow from "../../../../public/dashboard/svg/arrow_prev.svg";
 import Image from "next/image";
 import Link from "next/link";
 
-
-
 const SideBar = () => {
   const [active, setActive] = React.useState<boolean>(false);
 
   const adminMenu = [
-    {title: "Пользователь", link: "/admin/user"},
-    {title: "Контент", link: "/admin/content"},
-    {title: "Слайдер", link: "/admin/slider"},
-    {title: "Галерея", link: "/admin/gallery"},
+    { title: "Пользователь", link: "/admin/user"},
+    { title: "Главная", link: "/admin/main"},
+    { title: "Обо мне", link: "/admin/about"},
+    { title: "Контакты", link: "/admin/contacts"},
   ];
-
 
   return (
     <div
@@ -37,7 +34,10 @@ const SideBar = () => {
         />
       </button>
       <div className="p-10 pb-20">
-        <Link className="hover:text-blue-500 transition-all text-[18px]" href={"/"}>
+        <Link
+          className="hover:text-blue-500 transition-all text-[18px]"
+          href={"/"}
+        >
           выход
         </Link>
       </div>
@@ -60,4 +60,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar
+export default SideBar;
