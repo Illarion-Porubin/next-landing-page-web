@@ -14,9 +14,19 @@ export const fetchGetProject = createAsyncThunk<any, undefined, { rejectValue: s
     return data;
 });
 
-export const fetchUpdateUserProject = createAsyncThunk<any,{value: string; label: string}, { rejectValue: string }>(
-  "api/fetchUpdateUserProject", async (params, { rejectWithValue }) => {
+
+export const fetchUpdateProject = createAsyncThunk<any, {page: string, sectionId: string, content: string, contentId: string, value: string, oldPubId: string, newPubId: string}, { rejectValue: string }>(
+  "api/fetchUpdateProject", async (params, { rejectWithValue }) => {
     const { data } = await axios.put("/api/project", params);
+    if (!data) {
+      return rejectWithValue("Server Error!");
+    }
+    return data;
+});
+
+export const fetchAddPicture = createAsyncThunk<any, {page: string, sectionId: string, content: string, value: string, newPubId: string }, { rejectValue: string }>(
+  "api/fetchAddPicture", async (params, { rejectWithValue }) => {
+    const { data } = await axios.post("/api/project", params);
     if (!data) {
       return rejectWithValue("Server Error!");
     }
@@ -56,6 +66,32 @@ export const projectSlice = createSlice({
         state.isLoading = "loaded";
       })
       .addCase(fetchGetProject.rejected, (state) => {
+        state.data = null;
+        state.isLoading = "error";
+      })
+       ///fetchUpdateProject
+       .addCase(fetchUpdateProject.pending, (state) => {
+        state.data = null;
+        state.isLoading = "loading";
+      })
+      .addCase(fetchUpdateProject.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.isLoading = "loaded";
+      })
+      .addCase(fetchUpdateProject.rejected, (state) => {
+        state.data = null;
+        state.isLoading = "error";
+      })
+      //fetchAddPicture
+      .addCase(fetchAddPicture.pending, (state) => {
+        state.data = null;
+        state.isLoading = "loading";
+      })
+      .addCase(fetchAddPicture.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.isLoading = "loaded";
+      })
+      .addCase(fetchAddPicture.rejected, (state) => {
         state.data = null;
         state.isLoading = "error";
       })

@@ -1,26 +1,39 @@
+"use client";
+
 import React from "react";
-import { ISContent, ISection } from "@/types";
-import { ContentList } from "../content/ContentList";
+import { ISContent, ISection, ISPicture } from "@/types";
+import ContentList from "../content/ContentList";
 import Picture from "../picture/Picture";
+import { UploadPhoto } from "../upload/UploadPhoto";
 
 interface Props {
   data: ISection;
-  mark: string;
-  id: number;
+  sectionId: number;
+  page: string;
 }
 
-const Sections: React.FC<Props> = ({ data, mark, id }) => {
+const Sections: React.FC<Props> = ({ data, page, sectionId }) => {
 
   return (
     <div className="w-full mb-20 first:mt-0">
-      <h4 className=" text-[28px] font-bold ">Секция {id}</h4>
+      <h4 className=" text-[28px] font-bold ">Секция {sectionId + 1}</h4>
 
       {data.photoSlider && (
         <div className="my-6">
           <h4 className="text-[18px] font-bold my-10 first:mt-0">Слайдер</h4>
           <div className=" w-full h-auto flex flex-wrap gap-16">
-            {data.photoSlider.map((item: string, id: number) => (
-              <Picture url={item} key={id} mark={mark} type={'photoSlider'} id={id}/>
+            {data.photoSlider?.length < 8 && (
+              <UploadPhoto page={page} sectionId={String(sectionId)} content={"photoSlider"} />
+            )}
+            {data.photoSlider.map((item: ISPicture, id: number) => (
+              <Picture
+                item={item}
+                page={page}
+                sectionId={String(sectionId)}
+                contentId={String(id)}
+                content={"photoSlider"}
+                key={id}
+              />
             ))}
           </div>
         </div>
@@ -39,8 +52,18 @@ const Sections: React.FC<Props> = ({ data, mark, id }) => {
         <div>
           <h4 className="text-[18px] font-bold my-10 first:mt-0">Галерея</h4>
           <div className="flex flex-wrap gap-16">
-            {data.gallery?.map((item, id) => (
-              <Picture url={item} key={id} mark={mark} type={'gallery'} id={id}/>
+            {data.gallery?.length < 8 &&
+              <UploadPhoto page={page} sectionId={String(sectionId)} content={"gallery"} />
+            }
+            {data.gallery?.map((item: ISPicture, id) => (
+              <Picture
+                item={item}
+                page={page}
+                sectionId={String(sectionId)}
+                contentId={String(id)}
+                content={"gallery"}
+                key={id}
+              />
             ))}
           </div>
         </div>
@@ -50,8 +73,15 @@ const Sections: React.FC<Props> = ({ data, mark, id }) => {
         <div>
           <h4 className="text-[18px] font-bold my-10 first:mt-0">Картинки</h4>
           <div className=" w-full h-auto flex flex-wrap gap-16">
-            {data.images.map((item: string, id: number) => (
-              <Picture url={item} key={id} mark={mark} type={'images'} id={id}/>
+            {data.images.map((item: ISPicture, id: number) => (
+              <Picture
+                item={item}
+                page={page}
+                sectionId={String(sectionId)}
+                contentId={String(id)}
+                content={"images"}
+                key={id}
+              />
             ))}
           </div>
         </div>

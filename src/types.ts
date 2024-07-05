@@ -1,9 +1,9 @@
 
 
 export interface ISection {
-  photoSlider?: string[];
-  gallery?: string[];
-  images?: string[];
+  photoSlider?: ISPicture[];
+  gallery?: ISPicture[];
+  images?: ISPicture[];
   contentSlider?: { link: string, value: string }[];
   content?: {
     value: string;
@@ -12,6 +12,11 @@ export interface ISection {
     label: string;
   }[];
   services?: { desc: string, image: string, price: string, title: string }[];
+}
+
+export interface ISPicture {
+  url: string;
+  public_id: string;
 }
 
 export interface ISContent {

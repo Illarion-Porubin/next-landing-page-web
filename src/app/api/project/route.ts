@@ -1,6 +1,6 @@
 
 
-import { getProject, updateImages } from '@/server/services/project-service';
+import { getProject, updateProject, addPicture } from '@/server/services/project-service';
 import { IProject } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -18,15 +18,10 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   const request = await req.json();
-  
-  if (!request.value || !request.label) {
-    return NextResponse.json({ error: 'No data found' }, { status: 400 });
-  }
-
   try {
-    const data = await updateImages(request);
+    const data = await updateProject(request);
     if (!data) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Content not found' }, { status: 404 });
     }
     return NextResponse.json({ ...data });
   } catch (error) {
@@ -34,22 +29,18 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-// export async function POST(req: NextRequest) {
-//   const { email, password } = await req.json();
-
-//   try {
-//     const emailExists = await checkEmailExists(email);
-//     if (emailExists) {
-//       return NextResponse.json({ error: 'Email already exists' }, { status: 409 });
-//     }
-
-//     await registerUser(email, password);
-
-//     return NextResponse.json({ message: 'User registered successfully' }, { status: 200 });
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-//   }
-// }
+export async function POST(req: NextRequest) {
+  const request = await req.json();
+  try {
+    const data = await addPicture(request);
+    if (!data) {
+      return NextResponse.json({ error: 'Content not found' }, { status: 404 });
+    }
+    return NextResponse.json({ ...data });
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
 
 
 

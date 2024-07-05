@@ -1,17 +1,18 @@
 import React from "react";
 import add from "../../../../public/dashboard/svg/add.svg";
 import Image from "next/image";
-import { IUpload } from "../../../types";
 import { Upload } from "@/hooks/Upload";
 
 
 interface Props {
-    useFetch: string
+    sectionId: string
+    content: string;
+    page: string;
 }
 
-export const UploadPhoto:React.FC<Props> = ({useFetch}) => {
+export const UploadPhoto:React.FC<Props> = ({content, sectionId, page}) => {
     const filePicker = React.useRef<HTMLInputElement>(null);
-    const { upload }: IUpload = Upload({ filePicker });
+    const { upload } = Upload({ filePicker, content, sectionId, page, opiration: "add" });
 
     return (
         <article className="w-[220px] h-[220px]">

@@ -10,7 +10,7 @@ interface Props {
   item: ISContent;
 }
 
-export const ContentList: React.FC<Props> = ({ item  }) => {
+const ContentList: React.FC<Props> = ({ item  }) => {
   const [text, setText] = React.useState(item.value);
 
   const saveData = () => {
@@ -60,6 +60,7 @@ export const ContentList: React.FC<Props> = ({ item  }) => {
   );
 };
 
+export default ContentList;
 
 // {buttons.map((item: string, id: number) => (
 //   <button
