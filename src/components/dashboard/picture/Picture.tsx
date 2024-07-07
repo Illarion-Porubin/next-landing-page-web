@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import del from "../../../../public/dashboard/svg/delete.svg";
 import empty from "../../../../public/dashboard/png/empty-photo.png";
 import { Upload } from "../../../hooks/Upload";
 import Image from "next/image";
 import { ISPicture } from "@/types";
+import { useCustomDispatch } from "@/hooks/store";
+import { projectSlice, fetchDeletePicture } from "@/lib/redux/slices/projectSlice";
 
 interface Props {
   item: ISPicture;
@@ -15,22 +16,88 @@ interface Props {
   sectionId: string;
 }
 
-const testFelete = () => {
-  console.log(true);
-};
 
-const Picture: React.FC<Props> = ({ item, page, content, contentId, sectionId }) => {
+const Picture: React.FC<Props> = ({
+  item,
+  page,
+  content,
+  contentId,
+  sectionId,
+}) => {
+  const dispatch = useCustomDispatch();
   const filePicker = React.useRef<HTMLInputElement>(null);
-  const { upload } = Upload({ filePicker, page, sectionId, content, contentId, oldPubId: item.public_id });
+  const { upload } = Upload({
+    filePicker,
+    page,
+    sectionId,
+    content,
+    contentId,
+    oldPubId: item.public_id,
+  });
+
+  const deletePicture = () => {
+    dispatch(projectSlice.actions.deletePicture({ page, sectionId, content, oldPubId: item.public_id})),
+    dispatch(
+      fetchDeletePicture({
+        action: "deletePhoto",
+        page,
+        sectionId,
+        content,
+        contentId,
+        oldPubId: item.public_id,
+      })
+    )
+  }
 
   return (
     <article className="photo w-[240px] h-[240px] cursor-pointer ">
-      <Image
+        <svg
         className="trashcan w-[30px] h-auto top-1 right-1 transition-all"
-        src={del}
-        alt="delete"
-        onClick={testFelete}
-      />
+        width="888"
+        height="888"
+        viewBox="0 0 888 888"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        onClick={deletePicture}
+      >
+        <circle cx="444" cy="444" r="444" fill="#D9D9D9" />
+        <path
+          d="M377 444V610.667"
+          stroke="black"
+          strokeWidth="66.6667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M510.333 444V610.667"
+          stroke="black"
+          strokeWidth="66.6667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M177 277.333H710.333"
+          stroke="black"
+          strokeWidth="66.6667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M243.667 377.333V644C243.667 699.23 288.439 744 343.667 744H543.667C598.897 744 643.667 699.23 643.667 644V377.333"
+          stroke="black"
+          strokeWidth="66.6667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M343.667 210.667C343.667 173.848 373.514 144 410.333 144H477C513.82 144 543.667 173.848 543.667 210.667V277.333H343.667V210.667Z"
+          stroke="black"
+          strokeWidth="66.6667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+
       <input
         className="hidden"
         onChange={upload.handleChange}

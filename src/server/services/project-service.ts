@@ -13,13 +13,9 @@ export const getProject = async () => {
     return JSON.parse(JSON.stringify(content));
 };
 
-export const updateProject = async (res: { page: string, sectionId: number, content: string, contentId: number, value: string, oldPubId: string, newPubId: string }) => {
+export const updateProject = async (res: { page: string, sectionId: string, content: string, contentId: string, value: string, oldPubId: string, newPubId: string }) => {
     const { page, sectionId, content, contentId, value, newPubId, oldPubId } = { ...res };
-
     connectToDb();
-
-    ///добавить oldPubId
-
 
     cloudinary.v2.config({
         cloud_name: 'dnyxxxt88',
@@ -30,7 +26,7 @@ export const updateProject = async (res: { page: string, sectionId: number, cont
 
     try {
         const destroy = await cloudinary.v2.uploader.destroy(oldPubId);
-        console.log(destroy);
+        console.log(destroy, "destroy");
     } catch (error) {
         console.error(error);
     }
@@ -41,7 +37,6 @@ export const updateProject = async (res: { page: string, sectionId: number, cont
     }
 
     await project.updateOne(
-        // { 'main.gallery.1': { $exists: true } },  // Query to ensure the second index exists
         { $set: { [`${page}.${sectionId}.${content}.${contentId}`]: { url: value, public_id: newPubId } } }
     )
 
@@ -49,7 +44,7 @@ export const updateProject = async (res: { page: string, sectionId: number, cont
     return { ...data._doc };
 };
 
-export const addPicture = async (res: { page: string, sectionId: number, content: string, value: string, newPubId: string }) => {
+export const addPicture = async (res: { page: string, sectionId: string, content: string, value: string, newPubId: string }) => {
     connectToDb();
     const { page, sectionId, content, value, newPubId } = { ...res };
 
@@ -59,7 +54,7 @@ export const addPicture = async (res: { page: string, sectionId: number, content
     }
 
     await project.updateOne(
-        { $push: { [`${page}.${sectionId}.${content}`]: { url: value, public_id: newPubId } }},
+        { $push: { [`${page}.${sectionId}.${content}`]: { url: value, public_id: newPubId } } },
         { new: true, useFindAndModify: false }
     )
 
@@ -67,9 +62,23 @@ export const addPicture = async (res: { page: string, sectionId: number, content
     return { ...data._doc };
 }
 
-const deletePhotoAtIndex = async (res: { page: string, sectionId: number, content: string, value: string, newPubId: string }) => {
+export const deletePhotoAtIndex = async (res: { page: string, sectionId: number, content: string, contentId: string, oldPubId: string }) => {
     connectToDb();
-    const { page, sectionId, content, value, newPubId } = { ...res };
+    const { page, sectionId, content, contentId, oldPubId } = { ...res };
+
+    cloudinary.v2.config({
+        cloud_name: 'dnyxxxt88',
+        api_key: '119333622165115',
+        api_secret: '-3emrravls_kI477oUJ3Wxrok2M',
+        secure: true
+    });
+
+    try {
+        const destroy = await cloudinary.v2.uploader.destroy(oldPubId);
+        console.log(destroy, "destroy");
+    } catch (error) {
+        console.error(error);
+    }
 
     try {
         const project = await Project.findOne();
@@ -77,19 +86,20 @@ const deletePhotoAtIndex = async (res: { page: string, sectionId: number, conten
             return false;
         }
 
-      await project.updateOne(
-        { $unset: { [`${page}.${sectionId}.${content}`]: 1 } }, // Adjust the index for the specific main array element
-        { new: true, useFindAndModify: false }
-      );
-  
-      // Step 2: Pull the null value from the array
-      await project.updateOne(
-        { $pull: { [`${page}.${sectionId}.${content}`]: null } }, // Adjust the index for the specific main array element
-        { new: true, useFindAndModify: false }
-      );
-  
-      console.log('Photo deleted successfully');
+        await project.updateOne(
+            { $unset: { [`${page}.${sectionId}.${content}.${contentId}`]: 1 } },
+            { new: true, useFindAndModify: false }
+        );
+
+        // Step 2: Pull the null value from the array
+        await project.updateOne(
+            { $pull: { [`${page}.${sectionId}.${content}`]: null } }, 
+            { new: true, useFindAndModify: false }
+        );
+
+        const data = await Project.findOne()
+        return { ...data._doc };
     } catch (error) {
-      console.error('Error deleting photo:', error);
+        console.error('Error deleting photo:', error);
     }
-  };
+};

@@ -1,6 +1,6 @@
 
 
-import { getProject, updateProject, addPicture } from '@/server/services/project-service';
+import { getProject, updateProject, addPicture, deletePhotoAtIndex } from '@/server/services/project-service';
 import { IProject } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -18,15 +18,32 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   const request = await req.json();
-  try {
-    const data = await updateProject(request);
-    if (!data) {
-      return NextResponse.json({ error: 'Content not found' }, { status: 404 });
-    }
-    return NextResponse.json({ ...data });
-  } catch (error) {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  switch (request.action) {
+    case 'updatePhoto':
+      try {
+        const data = await updateProject(request);
+        if (!data) {
+          return NextResponse.json({ error: 'Content not found' }, { status: 404 });
+        }
+        return NextResponse.json({ ...data });
+      } catch (error) {
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      }
+
+    case 'deletePhoto':
+      try {
+        const data = await deletePhotoAtIndex(request);
+        if (!data) {
+          return NextResponse.json({ error: 'Content not found' }, { status: 404 });
+        }
+        return NextResponse.json({ ...data });
+      } catch (error) {
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      }
+    default:
+      return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   }
+
 }
 
 export async function POST(req: NextRequest) {
@@ -41,7 +58,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
-
 
 
 // export async function PATCH(req: NextRequest) {

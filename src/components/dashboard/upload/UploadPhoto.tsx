@@ -15,7 +15,7 @@ export const UploadPhoto:React.FC<Props> = ({content, sectionId, page}) => {
     const { upload } = Upload({ filePicker, content, sectionId, page, opiration: "add" });
 
     return (
-        <article className="w-[220px] h-[220px]">
+        <article className="w-[240px] h-[240px]">
         <input
             className="hidden"
             onChange={upload.handleChange}

@@ -1,9 +1,9 @@
 
 import axios from 'axios';
 import React from 'react'
-import { useCustomDispatch } from './store';
-import { fetchUpdateProject, fetchAddPicture } from '@/lib/redux/slices/projectSlice';
-// import { APIGatewayProxyHandler } from 'aws-lambda';
+import { useCustomDispatch, useCustomSelector } from './store';
+import { projectSlice, fetchUpdatePicture, fetchAddPicture } from '@/lib/redux/slices/projectSlice';
+import { selectProjectData } from '@/lib/redux/selectors';
 
 
 interface Props {
@@ -45,6 +45,8 @@ interface ICloudinary {
 export const Upload = ({...props}: Props) => {
     const {page, sectionId, content, contentId, oldPubId, opiration} = {...props};
     const dispatch = useCustomDispatch();
+    const data = useCustomSelector(selectProjectData);
+    // console.log(data, "dadsa");
 
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +60,8 @@ export const Upload = ({...props}: Props) => {
                     if(opiration === "add"){
                         const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
                         if (res.status === 200 && page && sectionId && content) {
-                            dispatch(fetchAddPicture({page, sectionId, content, value: res.data.secure_url, newPubId: res.data.public_id})) 
+                            dispatch(projectSlice.actions.addPicture({ page, sectionId: Number(sectionId), content, contentId: Number(contentId), value: res.data.secure_url, oldPubId, newPubId: res.data.public_id}));
+                            dispatch(fetchAddPicture({page, sectionId: sectionId, content, value: res.data.secure_url, newPubId: res.data.public_id})); 
                         }
                         else{
                             alert("Ошибка добавления")
@@ -66,9 +69,9 @@ export const Upload = ({...props}: Props) => {
                     }
                     else{
                         const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
-                        console.log(res.status === 200,  page , sectionId , content, contentId , oldPubId);
                         if (res.status === 200 && page && sectionId && content && contentId && oldPubId) {
-                            dispatch(fetchUpdateProject({page, sectionId, content, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id})) 
+                            dispatch(projectSlice.actions.updatePicture({ page, sectionId, content, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id}))
+                            dispatch(fetchUpdatePicture({action: "updatePhoto", page, sectionId, content, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id})) 
                         }
                         else{
                             alert("Ошибка изменения")
