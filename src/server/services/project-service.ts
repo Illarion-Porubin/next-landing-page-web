@@ -103,3 +103,26 @@ export const deletePhotoAtIndex = async (res: { page: string, sectionId: number,
         console.error('Error deleting photo:', error);
     }
 };
+
+export const updateText = async (res: { page: string, sectionId: string, contentId: string, value: string }) => {
+    connectToDb();
+    const { page, sectionId, contentId, value } = { ...res };
+
+    try {
+        const data = await Project.findOne();
+        if (!data) {
+            return false;
+        }
+
+        
+        
+        data[page][sectionId].content[contentId].value = value
+        await data.save()
+        console.log(data[page][sectionId].content[contentId]);
+
+
+        return { ...data._doc };
+    } catch (error) {
+        console.error('Error deleting photo:', error);
+    }
+}

@@ -39,6 +39,17 @@ export const fetchDeletePicture = createAsyncThunk<any, { action: string, page: 
     return data;
   });
 
+/////////text//////////
+
+export const fetchUpdateText = createAsyncThunk<any, { action: string, page: string, sectionId: string, contentId: string, value: string }, { rejectValue: string }>(
+  "api/fetchUpdateText", async (params, { rejectWithValue }) => {
+    const { data } = await axios.put("/api/project", params);
+    if (!data) {
+      return rejectWithValue("Server Error!");
+    }
+    return data;
+  });
+
 
 export type ProjectState = {
   data: any | null;
@@ -73,6 +84,12 @@ export const projectSlice = createSlice({
           return item
         }
       });
+    },
+    updateText: (state, action) => {
+      const { page, sectionId, contentId, value } = action.payload;
+      state.data[page][sectionId].content = state.data[page][sectionId].content.map((item: {value: string, type: string, explan: string, label: string}, id: number) => {
+        return contentId === id ? item.value = value : item
+      })
     },
   },
   extraReducers: (builder) => {

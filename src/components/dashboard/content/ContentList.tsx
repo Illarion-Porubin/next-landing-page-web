@@ -5,19 +5,26 @@ import { ISContent } from "../../../types";
 import acept from "../../../../public/dashboard/png/check.png";
 import clear from "../../../../public/dashboard/svg/delete.svg";
 import Image from "next/image";
+import { useCustomDispatch } from "@/hooks/store";
+import { fetchUpdateText, projectSlice } from "@/lib/redux/slices/projectSlice";
 
 interface Props {
   item: ISContent;
+  page: string;
+  sectionId: string;
+  contentId: string;
 }
 
-const ContentList: React.FC<Props> = ({ item  }) => {
+const ContentList: React.FC<Props> = ({ item, page, sectionId, contentId }) => {
+  const dispatch = useCustomDispatch();
   const [text, setText] = React.useState(item.value);
 
   const saveData = () => {
-    //делаем логику ссохранения
+    dispatch(projectSlice.actions.updateText({page, sectionId, contentId, value: text}))
+    dispatch(fetchUpdateText({action: "updateText", page, sectionId, contentId, value: text}));
   };
 
-  const deleteData = () => {
+  const returneData = () => {
     setText(item.value)
   };
 
@@ -31,10 +38,10 @@ const ContentList: React.FC<Props> = ({ item  }) => {
           {item.explan}
         </label>
         <div className="flex flex-row items-center justify-center relative">
-          <button className={`absolute right-8 top-[-30px] ${text !== item.value ? "opacity-1" : "opacity-0"}`} onClick={() => saveData()}>
+          <button className={`absolute right-8 top-[-30px] ${text !== item.value ? "opacity-1" : "opacity-0"}`} onClick={saveData}>
             <Image className="w-[24px]" src={acept} alt="acept" />
           </button>
-          <button className={`absolute right-0 top-[-30px] ${text !== item.value ? "opacity-1" : "opacity-0"}`} onClick={() => deleteData()}>
+          <button className={`absolute right-0 top-[-30px] ${text !== item.value ? "opacity-1" : "opacity-0"}`} onClick={returneData}>
             <Image className="w-[24px]" src={clear} alt="clear" />
           </button>
           {item.type === "text" ? (

@@ -43,7 +43,13 @@ const Sections: React.FC<Props> = ({ data, page, sectionId }) => {
         <div>
           <h4 className="text-[18px] font-bold my-10">Текстовое оформление</h4>
           {data.content.map((item: ISContent, id: number) => (
-            <ContentList item={item} key={id} />
+            <ContentList
+              item={item}
+              page={page}
+              sectionId={String(sectionId)}
+              contentId={String(id)}
+              key={id}
+            />
           ))}
         </div>
       )}

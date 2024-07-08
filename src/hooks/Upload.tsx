@@ -3,7 +3,6 @@ import axios from 'axios';
 import React from 'react'
 import { useCustomDispatch, useCustomSelector } from './store';
 import { projectSlice, fetchUpdatePicture, fetchAddPicture } from '@/lib/redux/slices/projectSlice';
-import { selectProjectData } from '@/lib/redux/selectors';
 
 
 interface Props {
@@ -45,8 +44,6 @@ interface ICloudinary {
 export const Upload = ({...props}: Props) => {
     const {page, sectionId, content, contentId, oldPubId, opiration} = {...props};
     const dispatch = useCustomDispatch();
-    const data = useCustomSelector(selectProjectData);
-    // console.log(data, "dadsa");
 
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,60 +1,58 @@
 import mongoose from "mongoose";
 
-const PagesNameSchema = new mongoose.Schema({
-    title: {
-        type: String,
-    },
-    page: {
-        type: String,
-    },
-    link: {
-        type: String,
-    },
+// const PagesNameSchema = new mongoose.Schema({
+//     title: { type: String, unique: true },
+//     page: { type: String, unique: true },
+//     link: { type: String, unique: true },
+// });
+
+const contentSchema = new mongoose.Schema({
+    value: { type: String },
+    type: { type: String },
+    explan: { type: String },
+    label: { type: String }
 });
 
-// const contentSchema = new mongoose.Schema({
-//     value: { type: String },
-//     type: { type: String, required: true },
-//     explan: { type: String, required: true },
-//     label: { type: String, required: true }
-// });
+const contentSliderSchema = new mongoose.Schema({
+    url: { type: String },
+    public_id: { type: String },
+    value: { type: String }
+});
 
-// const contentSliderSchema = new mongoose.Schema({
-//     link: { type: String },
-//     value: { type: String }
-// });
+const photoSliderSchema = new mongoose.Schema({
+    url: { type: String, },
+    public_id: { type: String }
+});
 
-// const servicesSliderSchema = new mongoose.Schema({
-//     desc: { type: String },
-//     image: { type: String },
-//     price: { type: String },
-//     title: { type: String },
-// });
+const serviceSchema = new mongoose.Schema({
+    desc: { type: String },
+    url: { type: String },
+    price: { type: String },
+    title: { type: String }
+});
 
-// const sectionSchema = new mongoose.Schema({
-//     photoSlider: { type: [String], default: ["/", "/"] },
-//     contentSlider: { type: [contentSliderSchema], default: [{ link: "/", value: "" }, { link: "/", value: "" }] },
-//     services: {
-//         type: [servicesSliderSchema],
-//         default: [
-//             { desc: "desc", image: "/", price: "100", title: "title" },
-//             { desc: "desc", image: "/", price: "200", title: "title" },
-//             { desc: "desc", image: "/", price: "3100", title: "title" }
-//         ]
-//     },
-//     content: {
-//         type: [contentSchema],
-//         default: [
-//             { value: "", type: "decr", explan: "описаие", label: "description" },
-//             { value: "", type: "text", explan: "первая часть заголовка", label: "title_firstPart" },
-//             { value: "", type: "text", explan: "вторая часть заголовка", label: "title_secondPart" }
-//         ]
-//     }
-// });
+const sectionSchema = new mongoose.Schema({
+    photoSlider: [photoSliderSchema],
+    contentSlider: [contentSliderSchema],
+    content: [contentSchema],
+    services: [serviceSchema],
+    gallery: [photoSliderSchema],
+    images: [photoSliderSchema]
+});
+
+const userInfoSchema = new mongoose.Schema({
+    firstName: { type: String },
+    lastName: { type: String },
+    email: { type: String }, 
+    phone: { type: String },
+    card: { type: String }
+});
+
 
 const ProjectSchema = new mongoose.Schema(
     {
         userInfo: {
+            type: [userInfoSchema],
             firstName: {
                 type: String,
                 default: "firstName",
@@ -87,17 +85,17 @@ const ProjectSchema = new mongoose.Schema(
                 unique: true,
             },
         },
-        menu: {
-            type: [PagesNameSchema],
-            default: [
-                { title: 'пользователь', link: "/admin/user", page: 'user' },
-                { title: 'главная', link: "/admin/main", page: 'main' },
-                { title: 'обо мне', link: "/admin/about", page: 'about' },
-                { title: 'контакты', link: "/admin/contacts", page: 'contacts' }
-            ]
-        },
-        main: { 
-            // type: [sectionSchema], default: [{}] 
+        // menu: {
+        //     type: [PagesNameSchema],
+        //     default: [
+        //         { title: 'пользователь', link: "/admin/user", page: 'user' },
+        //         { title: 'главная', link: "/admin/main", page: 'main' },
+        //         { title: 'обо мне', link: "/admin/about", page: 'about' },
+        //         { title: 'контакты', link: "/admin/contacts", page: 'contacts' }
+        //     ]
+        // },
+        main: {
+            type: [sectionSchema], default: [{}]
         },
     }
 )
