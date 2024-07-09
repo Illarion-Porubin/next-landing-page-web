@@ -1,8 +1,10 @@
 
 
-import { getProject, updateProject, addPicture, deletePhotoAtIndex, updateText } from '@/server/services/project-service';
+import { getProject, updateProject, addPicture, deletePhotoAtIndex, updateText, updateUser } from '@/server/services/project-service';
 import { IProject } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
+
+///content
 
 export async function GET() {
   try {
@@ -40,6 +42,7 @@ export async function PUT(req: NextRequest) {
       } catch (error) {
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
       }
+
     case 'updateText':
       try {
         const data = await updateText(request);
@@ -50,6 +53,18 @@ export async function PUT(req: NextRequest) {
       } catch (error) {
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
       }
+
+    case 'updateUser':
+      try {
+        const data = await updateUser(request);
+        if (!data) {
+          return NextResponse.json({ error: 'Content not found' }, { status: 404 });
+        }
+        return NextResponse.json({ ...data });
+      } catch (error) {
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      }
+
     default:
       return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   }
@@ -69,6 +84,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
+///content///
 
 // export async function PATCH(req: NextRequest) {
 //   const { email, password } = await req.json();

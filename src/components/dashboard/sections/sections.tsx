@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ISContent, ISection, ISPicture } from "@/types";
+import { IContent, ISection, ISPicture } from "@/types";
 import ContentList from "../content/ContentList";
 import Picture from "../picture/Picture";
 import { UploadPhoto } from "../upload/UploadPhoto";
@@ -42,7 +42,7 @@ const Sections: React.FC<Props> = ({ data, page, sectionId }) => {
       {data.content && (
         <div>
           <h4 className="text-[18px] font-bold my-10">Текстовое оформление</h4>
-          {data.content.map((item: ISContent, id: number) => (
+          {data.content.map((item: IContent, id: number) => (
             <ContentList
               item={item}
               page={page}

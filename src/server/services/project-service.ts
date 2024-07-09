@@ -3,6 +3,7 @@
 import { Project } from "../models/project-model";
 import { connectToDb } from "..";
 import * as cloudinary from 'cloudinary';
+import { IUserInfo } from "@/types";
 
 
 
@@ -113,13 +114,30 @@ export const updateText = async (res: { page: string, sectionId: string, content
         if (!data) {
             return false;
         }
-
-        
         
         data[page][sectionId].content[contentId].value = value
         await data.save()
-        console.log(data[page][sectionId].content[contentId]);
 
+        return { ...data._doc };
+    } catch (error) {
+        console.error('Error deleting photo:', error);
+    }
+}
+
+export const updateUser = async (res: { newValue: string, label: string }) => {
+    connectToDb();
+    const { newValue, label } = { ...res };
+
+    try {
+        const data = await Project.findOne();
+        if (!data) {
+            return false;
+        }    
+
+        data.user.userInfo = data.user.userInfo.map((item: IUserInfo) => {
+            return item.label === label ? {...item, value: newValue} : item
+        })
+        await data.save()
 
         return { ...data._doc };
     } catch (error) {

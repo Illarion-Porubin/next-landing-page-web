@@ -4,29 +4,19 @@ import React from "react";
 import empty from "../../../../public/dashboard/png/empty-avatar.png";
 import Image from "next/image";
 import { UerInfoList } from "./UerInfoList";
-import { IUserForm } from "@/types";
 import { useCustomDispatch, useCustomSelector } from "@/hooks/store";
-import { fetchGetContent } from "@/lib/redux/slices/contentSlice";
-import { selectContentData } from "@/lib/redux/selectors";
+import { selectProjectData } from "@/lib/redux/selectors";
+import { IUserInfo } from "@/types";
+import { fetchGetProject } from "@/lib/redux/slices/projectSlice";
 
 
 const UserInfo: React.FC = () => {
   const dispath = useCustomDispatch();
-  const data = useCustomSelector(selectContentData);
-
+  const data = useCustomSelector(selectProjectData);
 
   React.useEffect(() => {
-    dispath(fetchGetContent());
+    dispath(fetchGetProject());
   }, [dispath]);
-
-
-  const userForm = [
-    { value: data.data?.user?.firstName || "" , label: "firstName" },
-    { value: data.data?.user?.lastName || "" , label: "lastName" },
-    { value: data.data?.user?.email || "" , label: "email" },
-    { value: data.data?.user?.phone || "" , label: "phone" },
-    { value: data.data?.user?.card || "" , label: "card" },
-  ]
 
   
   return (
@@ -35,12 +25,12 @@ const UserInfo: React.FC = () => {
         <div className="flex flex-col items-center justify-center w-full sm:w-[360px] h-[600px] rounded-xl p-10 bg-slate-600">
           <Image
             className="max-w-[160px] h-auto object-cover my-2"
-            src={empty}
+            src={data.data?.user.userPhoto.url || empty}
             alt="avatar"
           />
           {
-            data.isLoading === "loaded" && 
-            userForm.map((item: IUserForm, id: number) => (
+            data.isLoading === "loaded" && data.data?.user.userInfo &&
+             data.data?.user.userInfo.map((item: IUserInfo, id: number) => (
               <UerInfoList item={item} key={id} />
             ))
           }

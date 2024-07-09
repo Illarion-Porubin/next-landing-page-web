@@ -15,7 +15,7 @@ export const fetchGetContent = createAsyncThunk<IContent, undefined, { rejectVal
     return data;
 });
 
-export const fetchUpdateUserContent = createAsyncThunk<IContent,{value: string; label: string}, { rejectValue: string }>(
+export const fetchUpdateUserContent = createAsyncThunk<IContent,{value: string; idInfo: string}, { rejectValue: string }>(
   "api/fetchUpdateUserContent", async (params, { rejectWithValue }) => {
     const { data } = await axios.put("/api/content", params);
     if (!data) {
