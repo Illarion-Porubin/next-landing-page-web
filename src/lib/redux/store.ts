@@ -1,29 +1,17 @@
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import contentReducer from "./slices/contentSlice";
 import projectReducer from "./slices/projectSlice";
 import authSlice from "./slices/authSlice";
 
 
 const rootReducer = combineReducers({
     projectReducer,
-    contentReducer,
     authSlice,
 });
-
-
 
 export const store = configureStore({
     reducer: rootReducer,
 })
-
-// export const store = configureStore({
-//     reducer: rootReducer,
-//     middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({
-//       serializableCheck: false
-//     }),
-//   })
 
 // Infer the type of makeStore
 // export type AppStore = ReturnType<typeof makeStore>

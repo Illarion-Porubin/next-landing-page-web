@@ -4,12 +4,12 @@ import React from "react";
 import empty from "../../../../public/dashboard/png/empty-photo.png";
 import { Upload } from "../../../hooks/Upload";
 import Image from "next/image";
-import { ISPicture } from "@/types";
+import { IPicture } from "@/types";
 import { useCustomDispatch } from "@/hooks/store";
 import { projectSlice, fetchDeletePicture } from "@/lib/redux/slices/projectSlice";
 
 interface Props {
-  item: ISPicture;
+  item: IPicture;
   page: string;
   content: string;
   contentId: string;

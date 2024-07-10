@@ -1,8 +1,9 @@
-import { IContacts } from "@/types";
+
+import { IUser } from "@/types";
 import React from "react";
 
 interface Props {
-  contacts: IContacts
+  user: IUser
 }
 interface FormData {
   name: { value: string };
@@ -10,16 +11,13 @@ interface FormData {
   massage: { value: string };
 }
 
-const Contacts:React.FC<Props> = ({contacts}) => {
+const Contacts:React.FC<Props> = ({user}) => {
   const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { name, email, massage } = e.target as typeof e.target & FormData;
-    console.log(name.value);
-    console.log(email.value);
-    console.log(massage.value);
   };
   
-  if(contacts)
+  if(user.userInfo)
   return (
     <div className="mx-16 pr-16 text-white flex w-full h-screen justify-center items-center relative border-l-[1px]" id="contacts">
       <h2 className="text-[30px] font-[800] leading[109%] tracking-[0.13em] uppercase rotate-[270deg] absolute top-[72%] left-[-72px]">
@@ -27,8 +25,8 @@ const Contacts:React.FC<Props> = ({contacts}) => {
       </h2>
       <div className="flex flex-col w-full h-auto items-star justify-around px-[15%]">
         <div className="mb-10">
-          <h1 className="text-left">{contacts.title}</h1>
-          <p className="text-left">{contacts.desc}</p>
+          <h1 className="text-left">Contact us</h1>
+          <p className="text-left">Let’s get to the nex level together</p>
         </div>
 
         <div className="w-full h-full flex justify-between items-center">
@@ -92,13 +90,13 @@ const Contacts:React.FC<Props> = ({contacts}) => {
           <div className="flex flex-col text-left max-w-[370px]">
             <div className="flex flex-col">
               <div className="mb-[15px] font-[400] text-[16px] leading-[132%]">
-                <a href="tel:">{contacts.phone}</a>
+                <a href="tel:">{user.userInfo[4].value}</a>
               </div>
               <div className="mb-[15px] font-[400] text-[16px] leading-[132%]">
-                <a href="mailto:">{contacts.email}</a>
+                <a href="mailto:">{user.userInfo[2].value}</a>
               </div>
               <div className="mb-[15px] font-[400] text-[16px] leading-[132%]">
-                <p>{contacts.address}</p>
+                <p>{user.userInfo[5].value}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-5  w-[374px] h-auto">

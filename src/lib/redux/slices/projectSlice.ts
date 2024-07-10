@@ -1,4 +1,4 @@
-import { IProject } from '@/types';
+import { IProject, IUserInfo } from '@/types';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -100,11 +100,12 @@ export const projectSlice = createSlice({
       })
     },
     updateUser: (state, action) => {
-      const { page, sectionId, contentId, value } = action.payload;
-      // @ts-ignore
-      state.data[page][sectionId].content = state.data[page][sectionId].content.map((item: { value: string, type: string, explan: string, label: string }, id: number) => {
-        return contentId === id ? item.value = value : item
-      })
+      const { value, label } = action.payload;
+      if(state.data) {
+        state.data.user.userInfo = state.data?.user.userInfo.map((item: IUserInfo) => {
+          return item.label === label ? {...item, value} : item;
+        })
+      }
     },
   },
   extraReducers: (builder) => {

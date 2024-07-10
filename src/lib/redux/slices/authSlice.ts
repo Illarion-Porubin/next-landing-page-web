@@ -4,25 +4,27 @@ import axios from "axios";
 
 
 
-export const fetchRegister = createAsyncThunk<{ status: number, message: string }, { email: string, password: string, confPass: string, securePass: string }, { rejectValue: { status: number, message: string } }>(
+export const fetchRegister = createAsyncThunk<{ status: number, message: string }, { action: string, email: string, password: string, securePass: string }, { rejectValue: { status: number, message: string } }>(
   "api/fetchRegist", async (params, { rejectWithValue }) => {
-    const { data }: { data: { status: number, message: string } } = await axios.post("/api/regist", params);
+    const { data }: { data: { status: number, message: string } } = await axios.post("/api/auth", params);
     if (!data) {
       return rejectWithValue({ status: 401, message: "Registarion error" });
+    }
+    if (data.status === 200) {
+      window.location.replace("/login")
     }
     return data;
   });
 
-export const fetchLogin = createAsyncThunk<IAdmin, { email: string, password: string }, { rejectValue: string }>(
+export const fetchLogin = createAsyncThunk<IAdmin, { action: string, email: string, password: string }, { rejectValue: string }>(
   "api/fetchLogin", async (params, { rejectWithValue }) => {
-    const { data }: { data: IAdmin } = await axios.post("/api/login", params);
+    const { data }: { data: IAdmin } = await axios.post("/api/auth", params);
     if (!data) {
       return rejectWithValue("Server Error!");
     }
-    console.log(data);
-    if (data.accessToken && "accessToken" in data && data.user.isActivated && data.user.isAdmin) {
-        window.localStorage.setItem('token', data.accessToken)
-        window.location.replace('/admin/user')
+    if (data.refreshToken && "refreshToken" in data) {
+      window.localStorage.setItem('token', data.refreshToken)
+      window.location.replace('/admin/user')
     }
     return data;
   }

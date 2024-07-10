@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
 
-// const PagesNameSchema = new mongoose.Schema({
-//     title: { type: String, unique: true },
-//     page: { type: String, unique: true },
-//     link: { type: String, unique: true },
-// });
-
 const contentSchema = new mongoose.Schema({
     value: { type: String },
     type: { type: String },
@@ -32,12 +26,12 @@ const serviceSchema = new mongoose.Schema({
 });
 
 const sectionSchema = new mongoose.Schema({
-    photoSlider: [photoSchema],
-    contentSlider: [contentSliderSchema],
-    content: [contentSchema],
-    services: [serviceSchema],
-    gallery: [photoSchema],
-    images: [photoSchema]
+    photoSlider: { type: [photoSchema], default: undefined },
+    contentSlider: { type: [contentSliderSchema], default: undefined },
+    content: { type: [contentSchema], default: undefined },
+    services: { type: [serviceSchema], default: undefined },
+    gallery: { type: [photoSchema], default: undefined },
+    images: { type: [photoSchema], default: undefined }
 });
 
 const userInfoSchema = new mongoose.Schema({
@@ -64,17 +58,41 @@ const ProjectSchema = new mongoose.Schema(
                 ]
             },
         },
-        // menu: {
-        //     type: [PagesNameSchema],
-        //     default: [
-        //         { title: 'пользователь', link: "/admin/user", page: 'user' },
-        //         { title: 'главная', link: "/admin/main", page: 'main' },
-        //         { title: 'обо мне', link: "/admin/about", page: 'about' },
-        //         { title: 'контакты', link: "/admin/contacts", page: 'contacts' }
-        //     ]
-        // },
         main: {
-            type: [sectionSchema], default: [{}]
+            type: [sectionSchema], default: [
+                {
+                    content:[],
+                    photoSlider: undefined,
+                    contentSlider: undefined,
+                    services: undefined,
+                    gallery: undefined,
+                    images: undefined,
+                },
+                {
+                    content:[],
+                    photoSlider: undefined,
+                    contentSlider: undefined,
+                    services: undefined,
+                    gallery: undefined,
+                    images: [],
+                },
+                {
+                    content:undefined,
+                    photoSlider: undefined,
+                    contentSlider: undefined,
+                    services: undefined,
+                    gallery: [],
+                    images: undefined,
+                },
+                {
+                    content:undefined,
+                    photoSlider: undefined,
+                    contentSlider: undefined,
+                    services: [],
+                    gallery: undefined,
+                    images: undefined,
+                },
+            ]
         },
     }
 )

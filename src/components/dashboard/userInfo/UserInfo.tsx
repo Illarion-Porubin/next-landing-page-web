@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { NextPage } from 'next';
 import empty from "../../../../public/dashboard/png/empty-avatar.png";
 import Image from "next/image";
 import { UerInfoList } from "./UerInfoList";
@@ -10,7 +11,7 @@ import { IUserInfo } from "@/types";
 import { fetchGetProject } from "@/lib/redux/slices/projectSlice";
 
 
-const UserInfo: React.FC = () => {
+const UserInfo: NextPage  = () => {
   const dispath = useCustomDispatch();
   const data = useCustomSelector(selectProjectData);
 

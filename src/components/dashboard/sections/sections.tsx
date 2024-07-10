@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { IContent, ISection, ISPicture } from "@/types";
+import { IContent, ISection, IPicture } from "@/types";
 import ContentList from "../content/ContentList";
-import Picture from "../picture/Picture";
 import { UploadPhoto } from "../upload/UploadPhoto";
+import Picture from "../picture/Picture";
 
 interface Props {
   data: ISection;
@@ -18,14 +18,14 @@ const Sections: React.FC<Props> = ({ data, page, sectionId }) => {
     <div className="w-full mb-20 first:mt-0">
       <h4 className=" text-[28px] font-bold ">Секция {sectionId + 1}</h4>
 
-      {data.photoSlider && (
-        <div className="my-6">
+      {data.photoSlider && 
+       <div className="my-20">
           <h4 className="text-[18px] font-bold my-10 first:mt-0">Слайдер</h4>
           <div className=" w-full h-auto flex flex-wrap gap-16">
             {data.photoSlider?.length < 8 && (
               <UploadPhoto page={page} sectionId={String(sectionId)} content={"photoSlider"} />
             )}
-            {data.photoSlider.map((item: ISPicture, id: number) => (
+            {data.photoSlider.map((item: IPicture, id: number) => (
               <Picture
                 item={item}
                 page={page}
@@ -37,10 +37,10 @@ const Sections: React.FC<Props> = ({ data, page, sectionId }) => {
             ))}
           </div>
         </div>
-      )}
+      }
 
       {data.content && (
-        <div>
+       <div className="my-20">
           <h4 className="text-[18px] font-bold my-10">Текстовое оформление</h4>
           {data.content.map((item: IContent, id: number) => (
             <ContentList
@@ -55,13 +55,13 @@ const Sections: React.FC<Props> = ({ data, page, sectionId }) => {
       )}
 
       {data.gallery && (
-        <div>
+        <div className="my-20">
           <h4 className="text-[18px] font-bold my-10 first:mt-0">Галерея</h4>
           <div className="flex flex-wrap gap-16">
             {data.gallery?.length < 8 &&
               <UploadPhoto page={page} sectionId={String(sectionId)} content={"gallery"} />
             }
-            {data.gallery?.map((item: ISPicture, id) => (
+            {data.gallery?.map((item: IPicture, id) => (
               <Picture
                 item={item}
                 page={page}
@@ -76,10 +76,13 @@ const Sections: React.FC<Props> = ({ data, page, sectionId }) => {
       )}
 
       {data.images && (
-        <div>
+       <div className="my-20">
           <h4 className="text-[18px] font-bold my-10 first:mt-0">Картинки</h4>
           <div className=" w-full h-auto flex flex-wrap gap-16">
-            {data.images.map((item: ISPicture, id: number) => (
+            {data.images?.length < 2 &&
+              <UploadPhoto page={page} sectionId={String(sectionId)} content={"images"} />
+            }
+            {data.images.map((item: IPicture, id: number) => (
               <Picture
                 item={item}
                 page={page}

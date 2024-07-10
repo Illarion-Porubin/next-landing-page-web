@@ -47,6 +47,7 @@ export const Upload = ({...props}: Props) => {
 
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(0);
         const target = e.target as HTMLInputElement;
         if (target.files) {
             const formData = new FormData();

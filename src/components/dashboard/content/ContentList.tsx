@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react";
-import { ISContent } from "../../../types";
+import { IContent } from "../../../types";
 import acept from "../../../../public/dashboard/png/check.png";
 import clear from "../../../../public/dashboard/svg/delete.svg";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import { useCustomDispatch } from "@/hooks/store";
 import { fetchUpdateText, projectSlice } from "@/lib/redux/slices/projectSlice";
 
 interface Props {
-  item: ISContent;
+  item: IContent;
   page: string;
   sectionId: string;
   contentId: string;
@@ -47,14 +47,14 @@ const ContentList: React.FC<Props> = ({ item, page, sectionId, contentId }) => {
           {item.type === "text" ? (
             <input
               id={item.value}
-              className="w-full"
+              className="w-full text-sm"
               type="text"
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
           ) : (
             <textarea
-              className="w-full h-40 resize-none mb-10"
+              className="w-full h-40 resize-none mb-10 text-sm"
               id={item.value}
               value={text}
               onChange={(e) => setText(e.target.value)}

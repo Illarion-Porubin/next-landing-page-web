@@ -1,13 +1,14 @@
-import { IPrices, IService } from "@/types";
+
+import { ISection } from "@/types";
 import Image from "next/image";
 import React from "react";
 
 interface Props {
-  prices: IPrices;
+  prices: ISection;
 }
 
 const Price: React.FC<Props> = ({ prices }) => {
-  if (prices)
+  if (prices.services)
     return (
       <div
         className="mx-16 pr-16 text-white flex w-full h-screen justify-center items-center relative border-l-[1px]"

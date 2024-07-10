@@ -1,14 +1,14 @@
-import { IPortfolio } from "@/types";
+import { IPicture, ISection } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 interface Props {
-  portfolio: IPortfolio;
+  portfolio: ISection;
 }
 
 const Portfolio: React.FC<Props> = ({ portfolio }) => {
-  if (portfolio)
+  if (portfolio.gallery)
     return (
       <div
         className="mx-16 pr-16 text-white flex w-full h-screen justify-center items-center relative border-l-[1px]"
@@ -19,7 +19,7 @@ const Portfolio: React.FC<Props> = ({ portfolio }) => {
         </h2>
         <div className="works_wrap">
           <div className="works">
-            {portfolio.gallery.map((item: {link: string}, id: number) => (
+            {portfolio.gallery.map((item: IPicture, id: number) => (
               <div key={id}>
                 <Link
                   href="/#"
@@ -28,7 +28,7 @@ const Portfolio: React.FC<Props> = ({ portfolio }) => {
                 >
                   <Image
                     className="w-auto h-auto "
-                    src={item.link}
+                    src={item.url}
                     alt={"converse"}
                     width={340}
                     height={200}

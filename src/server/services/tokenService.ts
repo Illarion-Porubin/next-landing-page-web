@@ -3,8 +3,9 @@
 
 import * as jwt from 'jsonwebtoken';
 import { Token } from '../models/token-model';
+import AdminDto from '../dtos/admin-dto';
 
-export const generateTokens = async (payload: any)  => {
+export const generateTokens = async (payload: AdminDto)  => {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET!, { expiresIn: '30m' })
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: '30d' })
     return {
@@ -31,13 +32,14 @@ export const validateRefreshToken = async (token: string) => {
     }
 }
 
-export const saveToken = async (userId: string, refreshToken: string) => {
-    const tokenData = await Token.findOne({ user: userId })
+export const saveToken = async (adminId: string, refreshToken: string) => {
+    const tokenData = await Token.findOne({ admin: adminId })
     if (tokenData) {
+        console.log(3);
         tokenData.refreshToken = refreshToken;
         return tokenData.save();
     }
-    const token = await Token.create({ user: userId, refreshToken })
+    const token = await Token.create({ admin: adminId, refreshToken })
     return token;
 }
 

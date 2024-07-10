@@ -4,6 +4,8 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useCustomDispatch } from "@/hooks/store";
+import { fetchRegister } from "@/lib/redux/slices/authSlice";
 
 interface FormData {
   email: { value: string };
@@ -13,6 +15,7 @@ interface FormData {
 }
 
 const Regist = () => {
+  const dispath = useCustomDispatch();
   const router = useRouter();
 
   const formInput = [
@@ -25,25 +28,17 @@ const Regist = () => {
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, password, confermPass, secretKey } =
-      e.target as typeof e.target & FormData;
+    e.target as typeof e.target & FormData;
 
     if (confermPass.value === password.value) {
-      // const res = await axios.post("/api/auth", { email: email.value, password: password.value, securePass: secretKey.value })
-      const response = await fetch("/api/regist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      dispath(
+        fetchRegister({
+          action: "regist",
           email: email.value,
           password: password.value,
           securePass: secretKey.value,
-        }),
-      });
-
-      if (response.status === 200) {
-        router.push("/login");
-      }
+        })
+      );
     } else {
       window.alert("Пароли не совпадают");
     }

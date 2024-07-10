@@ -14,23 +14,23 @@ import Price from "@/components/project/price/price";
 import Contacts from "@/components/project/contacts/Contacts";
 import Portfolio from "@/components/project/portfolio/Portfolio";
 import { useCustomDispatch, useCustomSelector } from "@/hooks/store";
-import { selectContentData } from "@/lib/redux/selectors";
-import { fetchGetContent } from "@/lib/redux/slices/contentSlice";
+import { fetchGetProject } from "@/lib/redux/slices/projectSlice";
+import { selectProjectData } from "@/lib/redux/selectors";
 
 export default function Home() {
   const dispatch = useCustomDispatch();
-  const data = useCustomSelector(selectContentData);
+  const data = useCustomSelector(selectProjectData);
 
   //сделать фильтрацию. Пример: если есть слайдер, то показывать кнопку для слайдера, иначе null
 
 
 
   React.useEffect(() => {
-    dispatch(fetchGetContent())
+    dispatch(fetchGetProject())
   }, [dispatch])
 
   
-  if(data.isLoading === "loaded" && data.data?.project)
+  if(data.isLoading === "loaded" && data.data?.main)
   return (
     <Swiper
       direction={"vertical"}
@@ -40,19 +40,19 @@ export default function Home() {
       modules={[Pagination]}
     >
       <SwiperSlide>
-        <Main main={data.data.project.main}/>
+        <Main main={data.data.main[0]}/>
       </SwiperSlide>
       <SwiperSlide>
-        <About about={data.data.project.about}/>
+        <About about={data.data.main[1]}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Portfolio portfolio={data.data.project.portfolio}/>
+        <Portfolio portfolio={data.data.main[2]}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Price prices={data.data.project.prices}/>
+        <Price prices={data.data.main[3]}/>
       </SwiperSlide>
       <SwiperSlide>
-        <Contacts contacts={data.data.project.contacts}/>
+        <Contacts user={data.data.user}/>
       </SwiperSlide>
     </Swiper>
   );

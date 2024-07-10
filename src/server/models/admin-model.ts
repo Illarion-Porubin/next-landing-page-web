@@ -14,6 +14,10 @@ const AdminSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    accessToken: {
+      type: String,
+      default: "",
+    },
     isAdmin: {
       type: Boolean,
       default: true,
@@ -28,15 +32,3 @@ const AdminSchema = new mongoose.Schema(
 
 
 export const Admin = mongoose.models?.Admin || mongoose.model("Admin", AdminSchema);
-
-const checkContent = async () => {
-  console.log('Admin <<<<<<<<');
-  const Admin = mongoose.model('Admin')
-  const content = await Admin.findOne()
-  if (!content) {
-    const contents = new Admin()
-    contents.save()
-  }
-}
-
-checkContent()

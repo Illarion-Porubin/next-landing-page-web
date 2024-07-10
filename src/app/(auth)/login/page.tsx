@@ -14,8 +14,6 @@ interface FormData {
 
 const Login = () => {
   const dispatch = useCustomDispatch();
-  const data = useCustomSelector(selectAuthData);
-  // const router = useRouter();
 
   const formInput = [
     { label: "email", type: "text", placeholder: "email" },
@@ -25,13 +23,8 @@ const Login = () => {
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, password } = e.target as typeof e.target & FormData;
-    dispatch(fetchLogin({ email: email.value, password: password.value }));
+    dispatch(fetchLogin({action: "login", email: email.value, password: password.value }));
   };
-
-  // if (data.isLoading === "loaded" && data.data?.accessToken) {
-  //     console.log(localStorage.getItem('token'));
-  //   // router.push("./admin/user");
-  // }
 
 
   return (

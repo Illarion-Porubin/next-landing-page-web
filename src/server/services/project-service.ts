@@ -3,7 +3,7 @@
 import { Project } from "../models/project-model";
 import { connectToDb } from "..";
 import * as cloudinary from 'cloudinary';
-import { IUserInfo } from "@/types";
+import { ISection, IUserInfo } from "@/types";
 
 
 
@@ -54,6 +54,8 @@ export const addPicture = async (res: { page: string, sectionId: string, content
         return false;
     }
 
+    console.log([`${page}.${sectionId}.${content}`], '<<<<<<<<<<');
+    
     await project.updateOne(
         { $push: { [`${page}.${sectionId}.${content}`]: { url: value, public_id: newPubId } } },
         { new: true, useFindAndModify: false }

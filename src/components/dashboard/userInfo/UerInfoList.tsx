@@ -6,10 +6,7 @@ import acept from "../../../../public/dashboard/png/check.png";
 import clear from "../../../../public/dashboard/svg/delete.svg";
 import Image from "next/image";
 import { useCustomDispatch } from "@/hooks/store";
-import {
-  contentSlice,
-} from "@/lib/redux/slices/contentSlice";
-import { fetchUpdateUser } from "@/lib/redux/slices/projectSlice";
+import { projectSlice, fetchUpdateUser } from "@/lib/redux/slices/projectSlice";
 
 interface Props {
   item: IUserInfo;
@@ -20,7 +17,7 @@ export const UerInfoList: React.FC<Props> = ({ item }) => {
   const dispatch = useCustomDispatch();
 
   const save = () => {
-    dispatch(contentSlice.actions.saveContent(userValue));
+    dispatch(projectSlice.actions.updateUser(userValue));
     dispatch(fetchUpdateUser({action: "updateUser", newValue: userValue.value, label: item.label}));
   };
 

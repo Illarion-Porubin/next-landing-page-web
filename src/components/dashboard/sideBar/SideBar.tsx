@@ -11,8 +11,6 @@ const SideBar = () => {
   const adminMenu = [
     { title: "Пользователь", link: "/admin/user"},
     { title: "Главная", link: "/admin/main"},
-    // { title: "Обо мне", link: "/admin/about"},
-    // { title: "Контакты", link: "/admin/contacts"},
   ];
 
   return (
