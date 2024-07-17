@@ -11,7 +11,7 @@ export const getProject = async () => {
     // noStore();
     connectToDb();
     const content = await Project.findOne();
-    return JSON.parse(JSON.stringify(content));
+    return content
 };
 
 export const updateProject = async (res: { page: string, sectionId: string, content: string, contentId: string, value: string, oldPubId: string, newPubId: string }) => {
