@@ -2,8 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 import { useCustomDispatch } from "@/hooks/store";
 import { fetchRegister } from "@/lib/redux/slices/authSlice";
 
@@ -16,7 +14,6 @@ interface FormData {
 
 const Regist = () => {
   const dispath = useCustomDispatch();
-  const router = useRouter();
 
   const formInput = [
     { labe: "email", type: "text", placeholder: "email" },
@@ -27,8 +24,7 @@ const Regist = () => {
 
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { email, password, confermPass, secretKey } =
-    e.target as typeof e.target & FormData;
+    const { email, password, confermPass, secretKey } = e.target as typeof e.target & FormData;
 
     if (confermPass.value === password.value) {
       dispath(
@@ -71,7 +67,7 @@ const Regist = () => {
             className="p-2 bg-white w-[100px] h-8 rounded-sm text-sm leading-[1px]"
             type="submit"
           >
-            войти
+            регистрация 
           </button>
         </form>
         <Link className="text-sm mt-6 text-white" href={"/login"}>

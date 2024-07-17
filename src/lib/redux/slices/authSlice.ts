@@ -67,10 +67,6 @@ export const authSlice = createSlice({
         state.data = null;
         state.isLoading = "error";
       })
-
-
-
-
       ///catch errors
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.type;

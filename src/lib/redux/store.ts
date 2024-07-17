@@ -1,16 +1,17 @@
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import projectReducer from "./slices/projectSlice";
 import authSlice from "./slices/authSlice";
+import { contentApi } from "./contentApi";
 
 
 const rootReducer = combineReducers({
-    projectReducer,
+    [contentApi.reducerPath]: contentApi.reducer,
     authSlice,
 });
 
 export const store = configureStore({
     reducer: rootReducer,
+    middleware: (getDefultMiddlware) => getDefultMiddlware().concat(contentApi.middleware)
 })
 
 // Infer the type of makeStore

@@ -1,8 +1,7 @@
 
 import axios from 'axios';
 import React from 'react'
-import { useCustomDispatch, useCustomSelector } from './store';
-import { projectSlice, fetchUpdatePicture, fetchAddPicture } from '@/lib/redux/slices/projectSlice';
+import { useAddPictureMutation, useUpdatePictureMutation } from '@/lib/redux';
 
 
 interface Props {
@@ -42,12 +41,11 @@ interface ICloudinary {
 
 
 export const Upload = ({...props}: Props) => {
+    const [addPicture] = useAddPictureMutation();
+    const [updatePicture] = useUpdatePictureMutation()
     const {page, sectionId, content, contentId, oldPubId, opiration} = {...props};
-    const dispatch = useCustomDispatch();
-
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(0);
         const target = e.target as HTMLInputElement;
         if (target.files) {
             const formData = new FormData();
@@ -58,8 +56,7 @@ export const Upload = ({...props}: Props) => {
                     if(opiration === "add"){
                         const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
                         if (res.status === 200 && page && sectionId && content) {
-                            dispatch(projectSlice.actions.addPicture({ page, sectionId: Number(sectionId), content, contentId: Number(contentId), value: res.data.secure_url, oldPubId, newPubId: res.data.public_id}));
-                            dispatch(fetchAddPicture({page, sectionId: sectionId, content, value: res.data.secure_url, newPubId: res.data.public_id})); 
+                            addPicture({page, sectionId: sectionId, content, value: res.data.secure_url, newPubId: res.data.public_id})
                         }
                         else{
                             alert("Ошибка добавления")
@@ -68,8 +65,7 @@ export const Upload = ({...props}: Props) => {
                     else{
                         const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
                         if (res.status === 200 && page && sectionId && content && contentId && oldPubId) {
-                            dispatch(projectSlice.actions.updatePicture({ page, sectionId, content, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id}))
-                            dispatch(fetchUpdatePicture({action: "updatePhoto", page, sectionId, content, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id})) 
+                            updatePicture({action: "updatePhoto", page, sectionId, content, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id})
                         }
                         else{
                             alert("Ошибка изменения")

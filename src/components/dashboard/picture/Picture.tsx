@@ -5,8 +5,7 @@ import empty from "../../../../public/dashboard/png/empty-photo.png";
 import { Upload } from "../../../hooks/Upload";
 import Image from "next/image";
 import { IPicture } from "@/types";
-import { useCustomDispatch } from "@/hooks/store";
-import { projectSlice, fetchDeletePicture } from "@/lib/redux/slices/projectSlice";
+import { useDeletePictureMutation } from "@/lib/redux";
 
 interface Props {
   item: IPicture;
@@ -16,7 +15,6 @@ interface Props {
   sectionId: string;
 }
 
-
 const Picture: React.FC<Props> = ({
   item,
   page,
@@ -24,41 +22,37 @@ const Picture: React.FC<Props> = ({
   contentId,
   sectionId,
 }) => {
-  const dispatch = useCustomDispatch();
+  const [deletePicture] = useDeletePictureMutation();
+
   const filePicker = React.useRef<HTMLInputElement>(null);
   const { upload } = Upload({
     filePicker,
     page,
     sectionId,
     content,
-    contentId,
+    contentId, 
     oldPubId: item.public_id,
   });
 
-  const deletePicture = () => {
-    dispatch(projectSlice.actions.deletePicture({ page, sectionId, content, oldPubId: item.public_id})),
-    dispatch(
-      fetchDeletePicture({
-        action: "deletePhoto",
-        page,
-        sectionId,
-        content,
-        contentId,
-        oldPubId: item.public_id,
-      })
-    )
-  }
-
   return (
     <article className="photo w-[240px] h-[240px] cursor-pointer ">
-        <svg
+      <svg
         className="trashcan w-[30px] h-auto top-1 right-1 transition-all"
         width="888"
         height="888"
         viewBox="0 0 888 888"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        onClick={deletePicture}
+        onClick={() =>
+          deletePicture({
+            action: "deletePhoto",
+            page,
+            sectionId,
+            content,
+            contentId,
+            oldPubId: item.public_id,
+          })
+        }
       >
         <circle cx="444" cy="444" r="444" fill="#D9D9D9" />
         <path

@@ -2,10 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { useCustomDispatch, useCustomSelector } from "@/hooks/store";
+import { useCustomDispatch } from "@/hooks/store";
 import { fetchLogin } from "@/lib/redux/slices/authSlice";
-import { selectAuthData } from "@/lib/redux/selectors";
-import { useRouter } from "next/navigation";
 
 interface FormData {
   email: { value: string };

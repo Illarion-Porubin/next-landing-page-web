@@ -2,8 +2,8 @@
 
 import React from "react";
 import { IContent, ISection, IPicture } from "@/types";
-import ContentList from "../content/ContentList";
 import { UploadPhoto } from "../upload/UploadPhoto";
+import ContentList from "../content/ContentList";
 import Picture from "../picture/Picture";
 
 interface Props {

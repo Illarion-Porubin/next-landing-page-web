@@ -40,8 +40,6 @@ export interface IContent {
   label: string;
 }
 
-///admin
-
 export interface IAdmin {
   refreshToken: string;
   accessToken: string;
@@ -51,3 +49,50 @@ export interface IAdmin {
   password: string,
   isActivated: boolean,
 }
+
+//////fetch
+
+export interface IUpdatePicture {
+  action: string;
+  page: string;
+  sectionId: string;
+  content: string;
+  contentId: string;
+  value: string;
+  oldPubId: string;
+  newPubId: string;
+}
+
+export interface IAddPicture {
+  page: string;
+  sectionId: string;
+  content: string;
+  value: string;
+  newPubId: string;
+}
+
+export interface IDeletePicture {
+  action: string;
+  page: string;
+  sectionId: string;
+  content: string;
+  contentId: string;
+  oldPubId: string;
+}
+
+export interface IUpdateText {
+  action: string;
+  page: string;
+  sectionId: string;
+  contentId: string;
+  value: string;
+}
+
+export interface IUpdateUser {
+  action: string;
+  newValue: string;
+  label: string;
+}
+
+//auth
+

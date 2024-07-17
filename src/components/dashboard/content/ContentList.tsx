@@ -7,6 +7,7 @@ import clear from "../../../../public/dashboard/svg/delete.svg";
 import Image from "next/image";
 import { useCustomDispatch } from "@/hooks/store";
 import { fetchUpdateText, projectSlice } from "@/lib/redux/slices/projectSlice";
+import { useUpdateTextMutation } from "@/lib/redux";
 
 interface Props {
   item: IContent;
@@ -16,12 +17,11 @@ interface Props {
 }
 
 const ContentList: React.FC<Props> = ({ item, page, sectionId, contentId }) => {
-  const dispatch = useCustomDispatch();
+  const [updateText] = useUpdateTextMutation();
   const [text, setText] = React.useState(item.value);
 
   const saveData = () => {
-    dispatch(projectSlice.actions.updateText({page, sectionId, contentId, value: text}))
-    dispatch(fetchUpdateText({action: "updateText", page, sectionId, contentId, value: text}));
+    updateText({action: "updateText", page, sectionId, contentId, value: text})
   };
 
   const returneData = () => {
