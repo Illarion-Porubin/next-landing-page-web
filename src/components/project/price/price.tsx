@@ -1,5 +1,5 @@
 
-import { ISection } from "@/types";
+import { ISection, IService } from "@/types";
 import Image from "next/image";
 import React from "react";
 
@@ -25,11 +25,11 @@ const Price: React.FC<Props> = ({ prices }) => {
             <div className="w-full h-[450px] overflow-y-scroll">
               {prices.services.map((item: IService, id: number) => (
                 <div key={id}>
-                  <div className="flex max-w-[600px] h-auto items-center">
+                  <div className="flex w-full h-auto items-center">
                     <div className="w-[254px] h-[126px] m-[26px] ml-0">
                       <Image
-                        className="w-auto h-auto "
-                        src={item.image}
+                        className="w-full h-auto"
+                        src={item.url}
                         alt="service"
                         width={254}
                         height={126}

@@ -4,7 +4,7 @@ export interface ISection {
   images?: IPicture[] | null;
   contentSlider?: { link: string; value: string }[] | null;
   content?: IContent[] | null;
-  services?: { desc: string; image: string; price: string; title: string }[] | null;
+  services?: IService[] | null;
 }
 
 export interface IPicture {
@@ -50,6 +50,13 @@ export interface IAdmin {
   isActivated: boolean,
 }
 
+export interface IService {
+  title: string;
+  desc: string;
+  url: string;
+  price: string;
+}
+
 //////fetch
 
 export interface IUpdatePicture {
@@ -88,11 +95,17 @@ export interface IUpdateText {
   value: string;
 }
 
+export interface IUpdateService {
+  action: string;
+  page: string;
+  type: string;
+  sectionId: string;
+  contentId: string;
+  value: string;
+}
+
 export interface IUpdateUser {
   action: string;
   newValue: string;
   label: string;
 }
-
-//auth
-

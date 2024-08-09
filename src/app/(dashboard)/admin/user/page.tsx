@@ -8,7 +8,7 @@ import React from "react";
 const UserPage = () => {
   useTokenValidation();
 
-  const {data= [], isLoading} = useGetContentQuery(undefined)
+  const {data = [], isLoading} = useGetContentQuery(undefined)
 
   if(isLoading) return <h1>Loading...</h1>
 

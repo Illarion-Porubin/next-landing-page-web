@@ -5,9 +5,8 @@ import { IContent } from "../../../types";
 import acept from "../../../../public/dashboard/png/check.png";
 import clear from "../../../../public/dashboard/svg/delete.svg";
 import Image from "next/image";
-import { useCustomDispatch } from "@/hooks/store";
-import { fetchUpdateText, projectSlice } from "@/lib/redux/slices/projectSlice";
 import { useUpdateTextMutation } from "@/lib/redux";
+import Buttons from "../buttons/Buttons";
 
 interface Props {
   item: IContent;
@@ -38,12 +37,7 @@ const ContentList: React.FC<Props> = ({ item, page, sectionId, contentId }) => {
           {item.explan}
         </label>
         <div className="flex flex-row items-center justify-center relative">
-          <button className={`absolute right-8 top-[-30px] ${text !== item.value ? "opacity-1" : "opacity-0"}`} onClick={saveData}>
-            <Image className="w-[24px]" src={acept} alt="acept" />
-          </button>
-          <button className={`absolute right-0 top-[-30px] ${text !== item.value ? "opacity-1" : "opacity-0"}`} onClick={returneData}>
-            <Image className="w-[24px]" src={clear} alt="clear" />
-          </button>
+          <Buttons saveData={saveData} returneData={returneData} pastValue={item.value} newValue={text}/>
           {item.type === "text" ? (
             <input
               id={item.value}
@@ -60,7 +54,6 @@ const ContentList: React.FC<Props> = ({ item, page, sectionId, contentId }) => {
               onChange={(e) => setText(e.target.value)}
             />
           )}
-          
         </div>
       </div>
     </>
@@ -68,17 +61,3 @@ const ContentList: React.FC<Props> = ({ item, page, sectionId, contentId }) => {
 };
 
 export default ContentList;
-
-// {buttons.map((item: string, id: number) => (
-//   <button
-//     key={id}
-//     className={`mx-4 menuButton bg-slate-600 ${
-//       active === id
-//         ? "border-[2px] border-slate-600 bg-transparent text-black"
-//         : "text-white"
-//     }`}
-//     onClick={active ? () => saveData(id) : () => deleteData(id)}
-//   >
-//     {item}
-//   </button>
-// ))}

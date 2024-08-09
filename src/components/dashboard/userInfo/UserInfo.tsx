@@ -19,6 +19,9 @@ const UserInfo: React.FC<Props> = ({ data }) => {
             className="max-w-[160px] h-auto object-cover my-2"
             src={data.user.userPhoto.url || empty}
             alt="avatar"
+            width={160}
+            height={160}
+            priority
           />
           {data.user.userInfo.map((item: IUserInfo, id: number) => (
             <UerInfoList item={item} key={id} />

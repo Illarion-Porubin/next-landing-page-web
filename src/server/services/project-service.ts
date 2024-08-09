@@ -110,7 +110,8 @@ export const deletePhotoAtIndex = async (res: { page: string, sectionId: number,
 export const updateText = async (res: { page: string, sectionId: string, contentId: string, value: string }) => {
     connectToDb();
     const { page, sectionId, contentId, value } = { ...res };
-
+    
+    console.log(page, sectionId, contentId, value, "<<<<<<<<<<<<<<<");
     try {
         const data = await Project.findOne();
         if (!data) {

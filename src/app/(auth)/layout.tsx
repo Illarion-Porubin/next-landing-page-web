@@ -1,5 +1,5 @@
-import StoreProvider from "../StoreProvider";
 import "../globals.scss";
+import StoreProvider from "../StoreProvider";
 
 export default function AuthLayout({
   children,
