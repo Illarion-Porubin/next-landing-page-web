@@ -1,3 +1,4 @@
+
 export interface ISection {
   photoSlider?: IPicture[] | null;
   gallery?: IPicture[] | null;
@@ -54,6 +55,7 @@ export interface IService {
   title: string;
   desc: string;
   url: string;
+  public_id: string,
   price: string;
 }
 
@@ -96,12 +98,24 @@ export interface IUpdateText {
 }
 
 export interface IUpdateService {
-  action: string;
+  url?: string;
+  newPubId?: string;
+  type?: "price" | "desc" | "title";
+  action?: string;
+  oldPubId?: string;
+  value: string;
   page: string;
-  type: string;
   sectionId: string;
   contentId: string;
-  value: string;
+}
+
+export interface IUpdateServicePicture {
+  url?: string;
+  newPubId?: string;
+  oldPubId?: string;
+  page: string;
+  sectionId: string;
+  contentId: string;
 }
 
 export interface IUpdateUser {

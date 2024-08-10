@@ -1,6 +1,6 @@
 
 
-import { getProject, updateProject, addPicture, deletePhotoAtIndex, updateText, updateUser } from '@/server/services/project-service';
+import { getProject, updatePhoto, addPicture, deletePhotoAtIndex, updateText, updateUser, updateService } from '@/server/services/project-service';
 import { IProject } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -22,7 +22,7 @@ export async function PUT(req: NextRequest) {
   switch (request.action) {
     case 'updatePhoto':
       try {
-        const data = await updateProject(request);
+        const data = await updatePhoto(request);
         if (!data) {
           return NextResponse.json({ error: 'Content not found' }, { status: 404 });
         }
@@ -45,6 +45,17 @@ export async function PUT(req: NextRequest) {
     case 'updateText':
       try {
         const data = await updateText(request);
+        if (!data) {
+          return NextResponse.json({ error: 'Content not found' }, { status: 404 });
+        }
+        return NextResponse.json({ ...data });
+      } catch (error) {
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      }
+
+    case 'updateService':
+      try {
+        const data = await updateService(request);
         if (!data) {
           return NextResponse.json({ error: 'Content not found' }, { status: 404 });
         }

@@ -21,6 +21,7 @@ const photoSchema = new mongoose.Schema({
 const serviceSchema = new mongoose.Schema({
     desc: { type: String },
     url: { type: String },
+    public_id: { type: String },
     price: { type: String },
     title: { type: String }
 });

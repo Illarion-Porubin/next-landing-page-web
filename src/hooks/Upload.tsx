@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import React from 'react'
-import { useAddPictureMutation, useUpdatePictureMutation } from '@/lib/redux';
+import { useAddPictureMutation, useUpdatePictureMutation, useUpdateServiceMutation } from '@/lib/redux';
 
 
 interface Props {
@@ -42,7 +42,8 @@ interface ICloudinary {
 
 export const Upload = ({...props}: Props) => {
     const [addPicture] = useAddPictureMutation();
-    const [updatePicture] = useUpdatePictureMutation()
+    const [updatePicture] = useUpdatePictureMutation();
+    const [updateService] = useUpdateServiceMutation();
     const {page, sectionId, content, contentId, oldPubId, opiration} = {...props};
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,27 +53,46 @@ export const Upload = ({...props}: Props) => {
             formData.append("file", target.files[0]);
             formData.append("upload_preset", "od0cmi2t");
             const postImg = async () => {
-                try {
-                    if(opiration === "add"){
-                        const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
-                        if (res.status === 200 && page && sectionId && content) {
-                            addPicture({page, sectionId: sectionId, content, value: res.data.secure_url, newPubId: res.data.public_id})
+                switch(opiration) {
+                    case "add":
+                        try {
+                            const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
+                            if (res.status === 200 && page && sectionId && content) {
+                                addPicture({page, sectionId: sectionId, content, value: res.data.secure_url, newPubId: res.data.public_id})
+                            }
+                            else{
+                                alert("Ошибка добавления")
+                            }
+                        } catch (error) {
+                            console.log(error);
                         }
-                        else{
-                            alert("Ошибка добавления")
+                        break;
+                    case "updateService":
+                        try {
+                            const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
+                            if (res.status === 200 && page && sectionId && content && contentId && oldPubId) {
+                                updateService({action: "updateService", page, sectionId, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id,})
+                            }
+                            else{
+                                alert("Ошибка добавления")
+                            }
+                        } catch (error) {
+                            console.log(error);
                         }
-                    }
-                    else{
-                        const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
-                        if (res.status === 200 && page && sectionId && content && contentId && oldPubId) {
-                            updatePicture({action: "updatePhoto", page, sectionId, content, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id})
+                        break;
+                    default: 
+                        try {
+                            const res:ICloudinary = await axios.post("https://api.cloudinary.com/v1_1/dnyxxxt88/upload", formData);
+                            if (res.status === 200 && page && sectionId && content && contentId && oldPubId) {
+                                updatePicture({action: "updatePhoto", page, sectionId, content, contentId, value: res.data.secure_url, oldPubId, newPubId: res.data.public_id})
+                            }
+                            else{
+                                alert("Ошибка изменения")
+                            }
+                        } catch (error) {
+                            console.log(error);
                         }
-                        else{
-                            alert("Ошибка изменения")
-                        }
-                    }
-                } catch (error) {
-                    console.error(error)
+                        break;
                 }
             }
             postImg()

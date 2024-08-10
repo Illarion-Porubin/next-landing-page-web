@@ -55,7 +55,16 @@ export const contentApi = createApi({
                 url: `project`,
                 method: "PUT",
                 body,
-            })
+            }),
+            invalidatesTags: [{ type: "Content", id: "LIST" }]
+        }),
+        updateServicePicture: build.mutation({
+            query: (body: IUpdateService) => ({
+                url: `project`,
+                method: "PUT",
+                body,
+            }),
+            invalidatesTags: [{ type: "Content", id: "LIST" }]
         }),
         updateUser: build.mutation({
             query: (body: IUpdateUser) => ({

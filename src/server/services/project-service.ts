@@ -1,9 +1,9 @@
 "use server"
 
+import * as cloudinary from 'cloudinary';
 import { Project } from "../models/project-model";
 import { connectToDb } from "..";
-import * as cloudinary from 'cloudinary';
-import { ISection, IUserInfo } from "@/types";
+import { IService, IUserInfo } from "@/types";
 
 
 
@@ -14,9 +14,9 @@ export const getProject = async () => {
     return content
 };
 
-export const updateProject = async (res: { page: string, sectionId: string, content: string, contentId: string, value: string, oldPubId: string, newPubId: string }) => {
-    const { page, sectionId, content, contentId, value, newPubId, oldPubId } = { ...res };
+export const updatePhoto = async (res: { page: string, sectionId: string, content: string, contentId: string, value: string, oldPubId: string, newPubId: string }) => {
     connectToDb();
+    const { page, sectionId, content, contentId, value, newPubId, oldPubId } = { ...res };
 
     cloudinary.v2.config({
         cloud_name: 'dnyxxxt88',
@@ -53,8 +53,6 @@ export const addPicture = async (res: { page: string, sectionId: string, content
     if (!project) {
         return false;
     }
-
-    console.log([`${page}.${sectionId}.${content}`], '<<<<<<<<<<');
     
     await project.updateOne(
         { $push: { [`${page}.${sectionId}.${content}`]: { url: value, public_id: newPubId } } },
@@ -65,10 +63,7 @@ export const addPicture = async (res: { page: string, sectionId: string, content
     return { ...data._doc };
 }
 
-export const deletePhotoAtIndex = async (res: { page: string, sectionId: number, content: string, contentId: string, oldPubId: string }) => {
-    connectToDb();
-    const { page, sectionId, content, contentId, oldPubId } = { ...res };
-
+export const destroyPicture = async (oldPubId: string) => {
     cloudinary.v2.config({
         cloud_name: 'dnyxxxt88',
         api_key: '119333622165115',
@@ -82,6 +77,13 @@ export const deletePhotoAtIndex = async (res: { page: string, sectionId: number,
     } catch (error) {
         console.error(error);
     }
+}
+
+export const deletePhotoAtIndex = async (res: { page: string, sectionId: number, content: string, contentId: string, oldPubId: string }) => {
+    connectToDb();
+    const { page, sectionId, content, contentId, oldPubId } = { ...res };
+
+    destroyPicture(oldPubId)
 
     try {
         const project = await Project.findOne();
@@ -110,8 +112,7 @@ export const deletePhotoAtIndex = async (res: { page: string, sectionId: number,
 export const updateText = async (res: { page: string, sectionId: string, contentId: string, value: string }) => {
     connectToDb();
     const { page, sectionId, contentId, value } = { ...res };
-    
-    console.log(page, sectionId, contentId, value, "<<<<<<<<<<<<<<<");
+
     try {
         const data = await Project.findOne();
         if (!data) {
@@ -123,7 +124,33 @@ export const updateText = async (res: { page: string, sectionId: string, content
 
         return { ...data._doc };
     } catch (error) {
-        console.error('Error deleting photo:', error);
+        console.error('Error updateText:', error);
+    }
+}
+
+export const updateService = async (res: { oldPubId: string, newPubId: string | undefined, page: string, sectionId: string, contentId: string, type: "price" | "desc" | "title", value: string }) => {
+    connectToDb();
+    const {oldPubId, newPubId, page, sectionId, contentId, type, value } = { ...res };
+
+    try {
+        const data = await Project.findOne();
+        if (!data) {
+            return false;
+        }
+        const service: IService = data[page][sectionId].services[contentId];
+        if(newPubId && oldPubId) {      
+            service.url = value;
+            service.public_id = newPubId;
+            destroyPicture(oldPubId)
+            await data.save();
+        } else {
+            data[page][sectionId].services[contentId][type] = value;
+            await data.save();
+        }      
+
+        return { ...data._doc };
+    } catch (error) {
+        console.error('Error updateService:', error);
     }
 }
 
