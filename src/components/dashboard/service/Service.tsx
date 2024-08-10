@@ -118,7 +118,7 @@ const Service: React.FC<Props> = ({
         />
         <input
           className="w-full h-auto"
-          type="text"
+          type="number"
           placeholder="price"
           value={price}
           onChange={(e) => setPrice(e.target.value)}

@@ -1,5 +1,4 @@
 import React from "react";
-import { ILinks } from "@/types";
 import NavLst from "../navList/NavLinks";
 
 const Navigate = () => {
@@ -13,7 +12,7 @@ const Navigate = () => {
   return (
     <nav>
       <ul className="flex w-[480px] h-auto justify-around">
-        {links.map((item: ILinks) => (
+        {links.map((item: { title: string, link: string }) => (
           <NavLst item={item} key={item.title} />
         ))}
       </ul>

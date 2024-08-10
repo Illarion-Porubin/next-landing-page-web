@@ -1,10 +1,13 @@
-import { ILinks } from '@/types';
+
 import Link from 'next/link';
 import React from 'react';
 
 
 interface Props {
-    item: ILinks
+    item: {
+        link: string;
+        title: string;
+    }
 }
 
 const NavLst:React.FC<Props> = ({item}) => {
