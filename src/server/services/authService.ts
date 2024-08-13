@@ -25,7 +25,6 @@ export const registration = async (data: { email: string, password: string, secu
     }
     else {
         const hashPassword = await bcrypt.hash(password, 3);
-        // const activationLink = uuid.v4();
 
         const admin = await Admin.create({ email, password: hashPassword });
 
@@ -35,17 +34,6 @@ export const registration = async (data: { email: string, password: string, secu
         return true;
     }
 }
-
-// export const getUsers = async () => {
-//     // noStore();
-//     connectToDb();
-//     try {
-//         const users = await Admin.find();
-//         return users;
-//     } catch (err) {
-//         throw new TypeError("Failed to fetch - getUsers!");
-//     }
-// };
 
 export const login = async (data: { email: string, password: string }) => {
     const admin = await Admin.findOne({ email: data.email });

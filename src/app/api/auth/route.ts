@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
             const data = await login(request);
             if (data && data.accessToken) {
                 cookies().set('accessToken', data.accessToken, {
-                    httpOnly: false, 
+                    // httpOnly: false, 
                     maxAge: 60 * 15,
                     sameSite: 'strict',
                     path: "/"

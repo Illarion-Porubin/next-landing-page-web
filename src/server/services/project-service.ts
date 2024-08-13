@@ -3,18 +3,18 @@
 import * as cloudinary from 'cloudinary';
 import { Project } from "../models/project-model";
 import { IService, IUserInfo } from "@/types";
+import { connectToDb } from "..";
 
 
 
 export const getProject = async () => {
-    // noStore();
-    
+    connectToDb();
     const content = await Project.findOne();
     return content
 };
 
 export const updatePhoto = async (res: { page: string, sectionId: string, content: string, contentId: string, value: string, oldPubId: string, newPubId: string }) => {
-    
+    connectToDb();
     const { page, sectionId, content, contentId, value, newPubId, oldPubId } = { ...res };
 
     cloudinary.v2.config({
@@ -45,7 +45,7 @@ export const updatePhoto = async (res: { page: string, sectionId: string, conten
 };
 
 export const addPicture = async (res: { page: string, sectionId: string, content: string, value: string, newPubId: string }) => {
-    
+    connectToDb();
     const { page, sectionId, content, value, newPubId } = { ...res };
 
     const project = await Project.findOne();
@@ -63,6 +63,7 @@ export const addPicture = async (res: { page: string, sectionId: string, content
 }
 
 export const destroyPicture = async (oldPubId: string) => {
+    connectToDb();
     cloudinary.v2.config({
         cloud_name: 'dnyxxxt88',
         api_key: '119333622165115',
@@ -79,7 +80,7 @@ export const destroyPicture = async (oldPubId: string) => {
 }
 
 export const deletePhotoAtIndex = async (res: { page: string, sectionId: number, content: string, contentId: string, oldPubId: string }) => {
-    
+    connectToDb();
     const { page, sectionId, content, contentId, oldPubId } = { ...res };
 
     destroyPicture(oldPubId)
@@ -109,7 +110,7 @@ export const deletePhotoAtIndex = async (res: { page: string, sectionId: number,
 };
 
 export const updateText = async (res: { page: string, sectionId: string, contentId: string, value: string }) => {
-    
+    connectToDb();
     const { page, sectionId, contentId, value } = { ...res };
 
     try {
@@ -128,6 +129,7 @@ export const updateText = async (res: { page: string, sectionId: string, content
 }
 
 export const updateService = async (res: { oldPubId: string, newPubId: string | undefined, page: string, sectionId: string, contentId: string, type: "price" | "desc" | "title", value: string }) => {
+    connectToDb();
     const {oldPubId, newPubId, page, sectionId, contentId, type, value } = { ...res };
 
     try {
@@ -153,6 +155,7 @@ export const updateService = async (res: { oldPubId: string, newPubId: string | 
 }
 
 export const updateUser = async (res: { newValue: string, label: string }) => {
+    connectToDb();
     const { newValue, label } = { ...res };
 
     try {
