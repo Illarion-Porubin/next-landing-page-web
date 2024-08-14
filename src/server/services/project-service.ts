@@ -171,6 +171,32 @@ export const updateUser = async (res: { newValue: string, label: string }) => {
 
         return { ...data._doc };
     } catch (error) {
-        console.error('Error deleting photo:', error);
+        console.error('Error updateUser:', error);
+    }
+}
+
+export const updateUserPhoto = async (res: { oldPubId: string, newPubId: string, newUrl: string }) => {
+    connectToDb();
+    const { oldPubId, newPubId, newUrl } = { ...res };
+    console.log(oldPubId, 'oldPubId');
+    console.log(newPubId, 'newPubId');
+    console.log(newUrl, 'newUrl');
+
+    try {
+        const data = await Project.findOne();
+        if (!data) {
+            return false;
+        }    
+
+        if(oldPubId && newPubId){
+            destroyPicture(oldPubId);
+            data.user.userPhoto.url = newUrl; 
+            data.user.userPhoto.public_id = newPubId;
+            await data.save()
+        }
+
+        return { ...data._doc };
+    } catch (error) {
+        console.error('Error updateUserPhoto:', error);
     }
 }

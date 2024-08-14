@@ -2,6 +2,7 @@
 import axios from 'axios';
 import React from 'react'
 import { useAddPictureMutation, useUpdatePictureMutation, useUpdateServiceMutation } from '@/lib/redux';
+import { ICloudinary } from '@/types';
 
 
 interface Props {
@@ -13,31 +14,6 @@ interface Props {
     oldPubId?: string;
     opiration?: string;
 }
-
-interface ICloudinary {
-    data: {
-        public_id: string;
-        version: number;
-        signature: string;
-        width: number;
-        height: number;
-        format: string;
-        resource_type: string;
-        created_at: string;
-        tags: string[];
-        bytes: number;
-        type: string;
-        etag: string;
-        placeholder: boolean;
-        url: string;
-        secure_url: string;
-        access_mode: string;
-        original_filename: string;
-        [key: string]: any; // for any additional properties
-    },
-    status: number;
-}
-
 
 
 export const Upload = ({...props}: Props) => {

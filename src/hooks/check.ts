@@ -14,8 +14,6 @@ const useTokenValidation = () => {
           action: 'check'
         });
 
-        console.log(check);
-
         if (!check.data) {
           router.push('/');
           return;

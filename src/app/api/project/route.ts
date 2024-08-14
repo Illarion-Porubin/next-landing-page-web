@@ -1,6 +1,6 @@
 
 
-import { getProject, updatePhoto, addPicture, deletePhotoAtIndex, updateText, updateUser, updateService } from '@/server/services/project-service';
+import { getProject, updatePhoto, addPicture, deletePhotoAtIndex, updateText, updateUser, updateService, updateUserPhoto } from '@/server/services/project-service';
 import { IProject } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest) {
       try {
         const data = await updatePhoto(request);
         if (!data) {
-          return NextResponse.json({ error: 'Content not found', status: 404 });
+          return NextResponse.json({ error: 'updatePhoto not found', status: 404 });
         }
         return NextResponse.json({ ...data });
       } catch (error) {
@@ -35,7 +35,7 @@ export async function PUT(req: NextRequest) {
       try {
         const data = await deletePhotoAtIndex(request);
         if (!data) {
-          return NextResponse.json({ error: 'Content not found', status: 404 });
+          return NextResponse.json({ error: 'deletePhoto not found', status: 404 });
         }
         return NextResponse.json({ ...data });
       } catch (error) {
@@ -46,7 +46,7 @@ export async function PUT(req: NextRequest) {
       try {
         const data = await updateText(request);
         if (!data) {
-          return NextResponse.json({ error: 'Content not found', status: 404 });
+          return NextResponse.json({ error: 'updateText not found', status: 404 });
         }
         return NextResponse.json({ ...data });
       } catch (error) {
@@ -57,7 +57,7 @@ export async function PUT(req: NextRequest) {
       try {
         const data = await updateService(request);
         if (!data) {
-          return NextResponse.json({ error: 'Content not found', status: 404 });
+          return NextResponse.json({ error: 'updateService not found', status: 404 });
         }
         return NextResponse.json({ ...data });
       } catch (error) {
@@ -68,7 +68,18 @@ export async function PUT(req: NextRequest) {
       try {
         const data = await updateUser(request);
         if (!data) {
-          return NextResponse.json({ error: 'Content not found', status: 404 });
+          return NextResponse.json({ error: 'updateUser not found', status: 404 });
+        }
+        return NextResponse.json({ ...data });
+      } catch (error) {
+        return NextResponse.json({ error: 'Internal server error', status: 500 });
+      }
+
+    case 'updateUserPhoto':
+      try {
+        const data = await updateUserPhoto(request);
+        if (!data) {
+          return NextResponse.json({ error: 'updateUserPhoto not found', status: 404 });
         }
         return NextResponse.json({ ...data });
       } catch (error) {

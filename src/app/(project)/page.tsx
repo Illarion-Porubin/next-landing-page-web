@@ -14,7 +14,7 @@ import Price from "@/components/project/price/price";
 import Contacts from "@/components/project/contacts/Contacts";
 import Portfolio from "@/components/project/portfolio/Portfolio";
 import { useGetContentQuery } from "@/lib/redux";
- 
+
 
 export default function Home() {
   const { data = [], isLoading } = useGetContentQuery(undefined);

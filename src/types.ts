@@ -1,3 +1,4 @@
+import { Action } from '@reduxjs/toolkit';
 
 export interface ISection {
   photoSlider?: IPicture[] | null;
@@ -6,6 +7,30 @@ export interface ISection {
   contentSlider?: { link: string; value: string }[] | null;
   content?: IContent[] | null;
   services?: IService[] | null;
+}
+
+export interface ICloudinary {
+  data: {
+      public_id: string;
+      version: number;
+      signature: string;
+      width: number;
+      height: number;
+      format: string;
+      resource_type: string;
+      created_at: string;
+      tags: string[];
+      bytes: number;
+      type: string;
+      etag: string;
+      placeholder: boolean;
+      url: string;
+      secure_url: string;
+      access_mode: string;
+      original_filename: string;
+      [key: string]: any; // for any additional properties
+  },
+  status: number;
 }
 
 export interface IPicture {
@@ -122,4 +147,11 @@ export interface IUpdateUser {
   action: string;
   newValue: string;
   label: string;
+}
+
+export interface IUpdateUserPhoto{
+  action: string
+  oldPubId: string;
+  newPubId: string;
+  newUrl: string;
 }

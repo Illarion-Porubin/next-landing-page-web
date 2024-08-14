@@ -1,5 +1,5 @@
 
-import { IAddPicture, IDeletePicture, IUpdatePicture, IUpdateService, IUpdateText, IUpdateUser } from "@/types";
+import { IAddPicture, IDeletePicture, IUpdatePicture, IUpdateService, IUpdateText, IUpdateUser, IUpdateUserPhoto } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 
@@ -73,6 +73,14 @@ export const contentApi = createApi({
                 body,
             }),
             invalidatesTags: [{ type: "Content", id: "LIST" }]
+        }),
+        updateUserPhoto: build.mutation({
+            query: (body: IUpdateUserPhoto) => ({
+                url: `project`,
+                method: "PUT",
+                body,
+            }),
+            invalidatesTags: [{ type: "Content", id: "LIST" }]
         })
     }),
 })
@@ -85,5 +93,6 @@ export const {
     useDeletePictureMutation,
     useUpdateTextMutation,
     useUpdateUserMutation,
+    useUpdateUserPhotoMutation,
     useUpdateServiceMutation,
 } = contentApi;
