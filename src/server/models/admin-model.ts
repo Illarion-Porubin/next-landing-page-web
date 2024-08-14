@@ -14,7 +14,7 @@ const AdminSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    accessToken: {
+    refreshToken: {
       type: String,
       default: "",
     },

@@ -34,8 +34,8 @@ export const validateRefreshToken = async (token: string) => {
 
 export const saveToken = async (adminId: string, refreshToken: string) => {
     const tokenData = await Token.findOne({ admin: adminId })
+    console.log(tokenData, 'adminId<<<<<<<<');
     if (tokenData) {
-        console.log(3);
         tokenData.refreshToken = refreshToken;
         return tokenData.save();
     }

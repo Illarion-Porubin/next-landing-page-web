@@ -2,6 +2,9 @@
 // import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // import axios from 'axios';
 
+
+// старый код на redux toolkit
+
 // ///project
 // export const fetchGetProject = createAsyncThunk<IProject, undefined, { rejectValue: string }>(
 //   "api/fetchGetProject", async (_, { rejectWithValue }) => {

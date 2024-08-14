@@ -25,12 +25,13 @@ export const registration = async (data: { email: string, password: string, secu
     }
     else {
         const hashPassword = await bcrypt.hash(password, 3);
-
         const admin = await Admin.create({ email, password: hashPassword });
-
         const adminDto = new AdminDto(admin)
+        
         const tokens = await generateTokens({ ...adminDto });
         await saveToken(adminDto.id, tokens.refreshToken);
+        admin.refreshToken = tokens.refreshToken;
+        await admin.save()
         return true;
     }
 }
@@ -51,19 +52,26 @@ export const login = async (data: { email: string, password: string }) => {
     const tokens = await generateTokens({ ...adminDto });
     
     await saveToken(adminDto.id, tokens.refreshToken);
-    admin.accessToken = tokens.accessToken;
+    admin.refreshToken = tokens.refreshToken;
     await admin.save()
 
     return tokens
 }
 
-export const checkMe = async (res: { token: string }) => {
-    console.log("check");
+export const checkMe = async (refreshToken: string) => {
     try {
-        const access = jwt.verify(res.token, process.env.JWT_ACCESS_SECRET!) as jwt.JwtPayload;
-        const admin:IAdmin | null = await Admin.findById(access.id);  
+        const access = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as jwt.JwtPayload;
+        const admin = await Admin.findById(access.id);  
         if(access && admin){
-            return res.token === admin.accessToken && admin.isAdmin && admin.isActivated
+            if(admin.isAdmin && admin.isActivated){
+                const adminDto = new AdminDto(admin);
+                const tokens = await generateTokens({ ...adminDto });
+                await saveToken(adminDto.id, tokens.refreshToken);
+                admin.refreshToken = tokens.refreshToken;
+                await admin.save()
+                
+                return tokens
+            }
         }
     }
     catch (error) {
@@ -77,9 +85,6 @@ export const refresh = async (refreshToken: string) => {
     }
 
     const userData: any = validateRefreshToken(refreshToken);
-    // console.log(userData);
-
-
     const tokenFromDb = await findToken(refreshToken);
 
     if (!userData || !tokenFromDb) {

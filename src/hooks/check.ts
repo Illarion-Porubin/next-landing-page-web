@@ -6,36 +6,27 @@ import { useRouter } from 'next/navigation';
 
 const useTokenValidation = () => {
   const router = useRouter();
-  
+
   useEffect(() => {
     const validateToken = async () => {
       try {
-        const token = document.cookie
-          .split('; ')
-          .find(row => row.startsWith('accessToken='))
-          ?.split('=')[1];
+        const check = await axios.post('/api/auth', {
+          action: 'check'
+        });
 
-        if (!token) {
+        console.log(check);
+
+        if (!check.data) {
           router.push('/');
           return;
         }
 
-        const res = await axios.post('/api/auth', {
-          action: 'check',
-          token
-        });
-
-        const isAuthenticated = res.data.check;
-
-        if (!isAuthenticated) {
-          router.push('/');
-        }
       } catch (error) {
         console.error('Error during token validation:', error);
         router.push('/');
       }
     };
-
+   
     // Check token every 10 seconds
     const intervalId = setInterval(validateToken, 10000);
 
