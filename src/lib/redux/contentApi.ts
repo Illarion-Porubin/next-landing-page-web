@@ -3,10 +3,13 @@ import { IAddPicture, IDeletePicture, IUpdatePicture, IUpdateService, IUpdateTex
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 
+// http://localhost:3000"
+const host = "https://next-landing-page-web.onrender.com/"
+
 export const contentApi = createApi({
     reducerPath: 'contentApi',
     tagTypes: ['Content'],
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/" }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${host}/api/` }),
     endpoints: (build) => ({
         getContent: build.query({
             query: () => `project`,

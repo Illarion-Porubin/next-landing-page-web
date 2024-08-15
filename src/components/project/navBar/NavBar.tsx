@@ -3,10 +3,13 @@ import Navigate from "../navigate/Navigate";
 import Image from "next/image";
 import Link from "next/link";
 
+// http://localhost:3000"
+const host = "https://next-landing-page-web.onrender.com/"
+
 const Navbar = async () => {
   return (
     <div className="flex items-center justify-between bg-transparent w-full h-auto mt-8 fixed px-[120px] z-50">
-      <a href="http://localhost:3000">
+      <a href={host}>
         <Image className="w-auto h-auto" src={"/logo.png"} alt="logo" width={130} height={80} priority/>
       </a>
       {/* <Navigate /> */}
